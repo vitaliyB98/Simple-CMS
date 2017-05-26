@@ -1,12 +1,15 @@
 <!-- FILE: src/Template/Articles/index.php -->
 
-<h1>Articles</h1>
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Created</th>
-    </tr>
+<h1>Всі записи</h1>
 
-    
-
-</table>
+    <div>
+        <?php foreach ($articles as $article): ?>
+            <article>
+                <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>
+                <small><?= $article->created->format(DATE_RFC850) ?></small>
+                <p>
+                    <?= $article->body ?>
+                </p>
+            </article>
+        <?php endforeach; ?>
+    </div>

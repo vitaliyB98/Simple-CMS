@@ -25,7 +25,7 @@ class ArticlesController extends AppController {
     $this->set(compact('article'));
   }
 
-  public function adminAllArticles() {
+  public function tableList() {
     $this->index();
   }
 
@@ -36,7 +36,7 @@ class ArticlesController extends AppController {
       if ($this->Articles->save($article)) {
         $this->Flash->success(__('Your article has been saved.'));
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'tableList']);
       }
       $this->Flash->error(__('Unable to add your article.'));
     }
@@ -49,7 +49,7 @@ class ArticlesController extends AppController {
       $this->Articles->patchEntity($article, $this->request->getData());
       if ($this->Articles->save($article)) {
         $this->Flash->success(__('Your article has been updated.'));
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'tableList']);
       }
       $this->Flash->error(__('Unable to update your article'));
     }
@@ -63,7 +63,7 @@ class ArticlesController extends AppController {
     if ($this->Articles->delete($article)) {
       $this->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
 
-      return $this->redirect(['action' => 'index']);
+      return $this->redirect(['action' => 'tableList']);
     }
   }
 }

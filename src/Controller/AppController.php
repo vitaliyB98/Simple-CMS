@@ -27,6 +27,10 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
+  /**
+   * Include WYSIWYG.
+   */
+    public $helpers = ['AkkaCKEditor.CKEditor'];
 
     /**
      * Initialization hook method.

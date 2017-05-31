@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.6",
+	"akkaweb/cakephp-ckeditor": "dev-master",
         "cakephp/cakephp": "3.4.*",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "~1.0",

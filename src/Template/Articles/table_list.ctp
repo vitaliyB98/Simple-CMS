@@ -1,6 +1,18 @@
+<?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
 <h1>Posts</h1>
 <?= $this->Html->link('Add post', ['action' => 'add']) ?>
 <table>
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Created
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
     <?php foreach ($articles as $article): ?>
     <tr>
         <td>

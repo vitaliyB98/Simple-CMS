@@ -2,9 +2,12 @@
 
 <ul>
     <li>
-        <a href = "/articles/admin_all_articles">Posts</a>
+        <?= $this->Html->link('Posts', ['controller' => 'Articles', 'action' => 'tableList']) ?>
     </li>
     <li>
-        <a href = "#">Users</a>
+        <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
+    </li>
+    <li>
+        <?= $this->Html->link('Roles', ['controller' => 'Roles', 'action' => 'index']) ?>
     </li>
 </ul>

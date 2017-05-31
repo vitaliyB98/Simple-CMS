@@ -9,6 +9,6 @@
     echo $this->Form->input('role', array(
         'options' => $role_name,
     ));
-    echo $this->Form->button(__('Create'));
+    echo $this->Form->submit('Create', array('class' => 'btn btn-primary'));
     echo $this->Form->end();
 ?>

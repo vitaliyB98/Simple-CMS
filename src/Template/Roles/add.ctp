@@ -3,6 +3,6 @@
 <?php
     echo $this->Form->create($role);
     echo $this->Form->input('role_name', ['type' => 'text']);
-    echo $this->Form->button(__('Create'));
+    echo $this->Form->submit('Create', array('class' => 'btn btn-primary'));
     echo $this->Form->end();
 ?>

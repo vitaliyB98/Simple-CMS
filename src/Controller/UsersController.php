@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Controller\AppController;
+use Cake\Event\Event;
+
 
 class UsersController extends AppController {
 
@@ -9,6 +12,11 @@ class UsersController extends AppController {
     parent::initialize();
     $this->loadModel('Roles');
     $this->loadComponent('Flash'); // Include the FlashComponent
+  }
+
+  public function beforeFilter(Event $event) {
+    parent::beforeFilter($event);
+    $this->Auth->allow(['signUp', 'logout']);
   }
 
   public function index() {
@@ -19,6 +27,26 @@ class UsersController extends AppController {
   public function view($id = null) {
     $user = $this->Users->get($id);
     $this->set(compact('user'));
+  }
+
+  public function login() {
+    if ($this->request->is('post')) {
+      $user = $this->Auth->identify();
+      if ($user) {
+        $this->Auth->setUser($user);
+
+        return $this->redirect($this->Auth->redirectUrl());
+      }
+      $this->Flash->error(__('Invalid alias or password, try again'));
+    }
+  }
+
+  public function logout() {
+    return $this->redirect($this->Auth->logout());
+  }
+
+  public function signUp() {
+    $this->add();
   }
 
   public function add() {

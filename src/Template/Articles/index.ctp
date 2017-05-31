@@ -1,6 +1,6 @@
 <!-- FILE: src/Template/Articles/index.php -->
 
-<h1>Всі записи</h1>
+<h1>Welcome</h1>
 
     <div>
         <?php foreach ($articles as $article): ?>
@@ -13,3 +13,10 @@
             </article>
         <?php endforeach; ?>
     </div>
+
+<ul class="pagination">
+    <?= $this->Paginator->prev('« Previous') ?>
+    <?= $this->Paginator->numbers() ?>
+    <?= $this->Paginator->next('Next »') ?>
+</ul>
+

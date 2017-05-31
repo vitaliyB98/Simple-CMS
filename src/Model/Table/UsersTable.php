@@ -17,6 +17,10 @@ class UsersTable extends Table {
 
   public function validationDefault(Validator $validator) {
     $validator
+      ->notEmpty('name')
+      ->requirePresence('name')
+      ->notEmpty('alias')
+      ->requirePresence('alias')
       ->notEmpty('email')
       ->requirePresence('email')
       ->notEmpty('password')

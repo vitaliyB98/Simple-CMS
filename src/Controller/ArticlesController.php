@@ -9,15 +9,21 @@
 namespace App\Controller;
 
 class ArticlesController extends AppController {
+
   public function initialize() {
     parent::initialize();
 
     $this->loadComponent('Flash'); // Include the FlashComponent
+    $this->loadComponent('Paginator');
   }
 
   public function index() {
-    $articles = $this->Articles->find('all')->order(['created' => 'DESC']);
-    $this->set(compact('articles'));
+    $this->set('articles', $this->Paginator->paginate($this->Articles, [
+        'limit' => 4,
+        'order' => [
+          'created' => 'DESC',
+        ]
+    ]));
   }
 
   public function view($id = 1) {
@@ -33,6 +39,8 @@ class ArticlesController extends AppController {
     $article = $this->Articles->newEntity();
     if ($this->request->is('post')) {
       $article = $this->Articles->patchEntity($article, $this->request->getData());
+      // Added this line.
+      $article->user_id = $this->Auth->user('id');
       if ($this->Articles->save($article)) {
         $this->Flash->success(__('Your article has been saved.'));
 

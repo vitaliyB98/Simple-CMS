@@ -1,5 +1,7 @@
 <!-- FILE: src/Template/Articles/index.php -->
-
+<?php
+    use App\Controller\AppController;
+?>
 <h1>Welcome</h1>
 
     <div>
@@ -8,8 +10,9 @@
                 <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>
                 <small><?= $article->created->format(DATE_RFC850) ?></small>
                 <p>
-                    <?= $article->body ?>
+                    <?= AppController::summary($article->body, 100) ?>
                 </p>
+                <?= $this->Html->link('Read more', ['action' => 'view', $article->id]) ?>
             </article>
         <?php endforeach; ?>
     </div>

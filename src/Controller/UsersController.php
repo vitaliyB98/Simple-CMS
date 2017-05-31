@@ -104,4 +104,5 @@ class UsersController extends AppController {
     }
     $this->set(compact('role_name'));
   }
+
 }

@@ -7,6 +7,7 @@
  */
 
 namespace App\Controller;
+use Cake\Event\Event;
 
 class ArticlesController extends AppController {
 
@@ -17,9 +18,17 @@ class ArticlesController extends AppController {
     $this->loadComponent('Paginator');
   }
 
-  public function index() {
+  /**
+   * Before filter.
+   */
+  public function beforeFilter(Event $event) {
+    parent::beforeFilter($event);
+    $this->Auth->allow(['index', 'view']);
+  }
+
+  public function index($limit = 4) {
     $this->set('articles', $this->Paginator->paginate($this->Articles, [
-        'limit' => 4,
+        'limit' => $limit,
         'order' => [
           'created' => 'DESC',
         ]
@@ -32,7 +41,7 @@ class ArticlesController extends AppController {
   }
 
   public function tableList() {
-    $this->index();
+    $this->index(5);
   }
 
   public function add() {

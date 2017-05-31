@@ -1,14 +1,23 @@
-<h1>Create user</h1>
+<div class = "users form">
+    <?= $this->Form->create($user) ?>
+    <fieldset>
+        <legend>Create user</legend>
+        <?php
+            echo $this->Form->input('name', ['type' => 'text']);
+            echo $this->Form->input('alias', ['type' => 'text']);
+            echo $this->Form->input('email', ['type' => 'email']);
+            echo $this->Form->input('password', ['type' => 'password']);
+            echo $this->Form->input('birth', [
+            'label' => 'Date of birth',
+            'minYear' => date('Y') - 70,
+            'maxYear' => date('Y') - 14,
+            ]);
+            echo $this->Form->input('role', array(
+            'options' => $role_name,
+            ));
+            echo $this->Form->submit('Edit', array('class' => 'btn btn-primary'));
+        ?>
+    </fieldset>
+    <?= $this->Form->end() ?>
 
-<?php
-    echo $this->Form->create($user);
-    echo $this->Form->input('name', ['type' => 'text']);
-    echo $this->Form->input('alias', ['type' => 'text']);
-    echo $this->Form->input('email', ['type' => 'email']);
-    echo $this->Form->input('password', ['type' => 'password']);
-    echo $this->Form->input('role', array(
-        'options' => $role_name,
-    ));
-    echo $this->Form->submit('Create', array('class' => 'btn btn-primary'));
-    echo $this->Form->end();
-?>
+</div>

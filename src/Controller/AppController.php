@@ -57,12 +57,12 @@ class AppController extends Controller
             ],
           ],
           'loginRedirect' => [
-            'controller' => 'Articles',
-            'action' => 'index',
+            'controller' => 'Pages',
+            'action' => 'display',
           ],
           'logoutRedirect' => [
-            'controller' => 'Articles',
-            'action' => 'index',
+            'controller' => 'Pages',
+            'action' => 'display',
           ],
         ]);
         /*
@@ -71,6 +71,14 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function isAuthorized($user) {
+      // Admin can access every action.
+      if (isset($user['role']) && $user['role'] === 3) {
+        return true;
+      }
+      return false;
     }
 
     /**
@@ -88,11 +96,21 @@ class AppController extends Controller
         }
     }
 
-    /**
-     * Before filter.
-     */
-    public function beforeFilter(Event $event) {
-      $this->Auth->allow(['index', 'view']);
+  /**
+   * Gets summary.
+   *
+   * @param $text
+   *   Text for summary.
+   * @param $word_limit
+   *   Number words.
+   *
+   * @return string
+   *   Summary.
+   */
+    static public function summary($text, $word_limit) {
+      $words = explode(" ",$text);
+      $word_limit === $words ? $end = '' : $end = ' ...';
+      return implode(" ",array_splice($words,0,$word_limit)) . $end;
     }
 
 }

@@ -42,17 +42,6 @@ class ArticlesController extends AppController {
       $sort_by = 'DESC';
     }
 
-    $users = $this->Articles->find('all', [
-      'condition' => ['Articles.user_id = Users.id'],
-      'limit' => $limit,
-      'order' => [
-        'Articles.created' => 'DESC',
-      ]
-    ])->contain(['Users']);
-    $users->hydrate(false);
-    $users = $users->toArray();
-    $this->set(compact('users'));
-
     $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users']), [
         'condition' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
@@ -64,7 +53,15 @@ class ArticlesController extends AppController {
   }
 
   public function view($id = 1) {
-    $article = $this->Articles->get($id);
+    $article = $this->Articles->find('all', [
+      'conditions' => [
+        'Articles.id' => $id,
+      ],
+    ])->contain(['Images', 'Users']);
+
+    $article->hydrate(false);
+    $article = $article->toArray();
+    $article = $article[0];
     $this->set(compact('article'));
   }
 
@@ -77,7 +74,7 @@ class ArticlesController extends AppController {
 
     // Save image.
     if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
-      if ( !($article->img_id = $this->uploadImg()) ) {
+      if ( !($article->image_id = $this->uploadImg()) ) {
         $this->Flash->error(__('Unable to create article.'));
         return $this->redirect(['action' => 'tableList']);
       }
@@ -101,12 +98,28 @@ class ArticlesController extends AppController {
 
   public function edit($id = null) {
     $article = $this->Articles->get($id);
+    $img_id = $article->image_id;
 
     // Save image.
     if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
-      if ( !($article->img_id = $this->uploadImg()) ) {
+      if ( !($article->image_id = $this->uploadImg()) ) {
+
         $this->Flash->error(__('Unable to create article.'));
         return $this->redirect(['action' => 'tableList']);
+
+      } else {
+
+        // If new photo save successfully, we delete old photo.
+        if (!empty($img_id)) {
+          // Find img name.
+          $image = $this->Images->get($img_id);
+          $img_delete = $image->img_name;
+          
+          // Delete img which we change.
+          $this->Images->delete($image);
+          unlink(WWW_ROOT . $img_delete);
+        }
+
       }
     }
 
@@ -125,7 +138,15 @@ class ArticlesController extends AppController {
     $this->request->allowMethod(['post', 'delete']);
 
     $article = $this->Articles->get($id);
+    $img_id = $article->image_id;
+
+    // Find img name.
+    $image = $this->Images->get($img_id);
+    $image_name = $image->img_name;
+
     if ($this->Articles->delete($article)) {
+      unlink(WWW_ROOT . $image_name);
+      $this->Images->delete($image);
       $this->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
 
       return $this->redirect(['action' => 'tableList']);
@@ -154,11 +175,12 @@ class ArticlesController extends AppController {
     }
 
     $old_path = $files['tmp_name'];
-    $new_path = WWW_ROOT . '/img/user_upload/article/' . $file_name;
+    $abs_path = WWW_ROOT . 'img/user_upload/article/' . $file_name;
+    $rel_path = '/img/user_upload/article/' . $file_name;
 
-    if (move_uploaded_file($old_path, $new_path)) {
+    if (move_uploaded_file($old_path, $abs_path)) {
       $img = $this->Images->newEntity();
-      $img->img_name = $file_name;
+      $img->img_name = $rel_path;
 
       if ($this->Images->save($img)) {
         return $img->id;

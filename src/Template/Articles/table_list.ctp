@@ -4,10 +4,13 @@
 <table>
     <tr>
         <th>
-            Title
+            <?= $this->Html->link('Title', ['action' => 'table-list','?' => ['sort_by' => 'Articles.title', 'type_sort' => 'ASC']]) ?>
         </th>
         <th>
-            Created
+            <?= $this->Html->link('Created', ['action' => 'table-list','?' => ['sort_by' => 'Articles.created', 'type_sort' => 'DESC']]) ?>
+        </th>
+        <th>
+            <?= $this->Html->link('Author', ['action' => 'table-list', '?' => ['sort_by' => 'Users.name', 'type_sort' => 'ASC']]) ?>
         </th>
         <th>
             Action
@@ -20,6 +23,9 @@
         </td>
         <td>
             <?= $article->created->format(DATE_RFC850) ?>
+        </td>
+        <td>
+            <?= $article->user->name ?>
         </td>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $article->id]) ?>

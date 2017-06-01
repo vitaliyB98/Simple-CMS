@@ -14,6 +14,7 @@ class ArticlesController extends AppController {
   public function initialize() {
     parent::initialize();
 
+    $this->loadModel('Users');
     $this->loadComponent('Flash'); // Include the FlashComponent
     $this->loadComponent('Paginator');
   }
@@ -27,12 +28,37 @@ class ArticlesController extends AppController {
   }
 
   public function index($limit = 4) {
-    $this->set('articles', $this->Paginator->paginate($this->Articles, [
+
+    empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
+    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
+
+    if (empty($sort_by)) {
+      $sort_by = 'Articles.created';
+    }
+
+    if (empty($type_sort)) {
+      $sort_by = 'DESC';
+    }
+
+    $users = $this->Articles->find('all', [
+      'condition' => ['Articles.user_id = Users.id'],
+      'limit' => $limit,
+      'order' => [
+        'Articles.created' => 'DESC',
+      ]
+    ])->contain(['Users']);
+    $users->hydrate(false);
+    $users = $users->toArray();
+    $this->set(compact('users'));
+
+    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users']), [
+        'condition' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
         'order' => [
-          'created' => 'DESC',
+          $sort_by => $type_sort,
         ]
-    ]));
+      ]
+    ));
   }
 
   public function view($id = 1) {

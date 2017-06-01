@@ -8,7 +8,7 @@
         <?php foreach ($articles as $article): ?>
             <article>
                 <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>
-                <small><?= $article->created->format(DATE_RFC850) ?></small>
+                <small><?= $article->created->format(DATE_RFC850) ?> by <b><?= $article->user->name?></b></small>
                 <p>
                     <?= AppController::summary($article->body, 100) ?>
                 </p>
@@ -22,4 +22,3 @@
     <?= $this->Paginator->numbers() ?>
     <?= $this->Paginator->next('Next »') ?>
 </ul>
-

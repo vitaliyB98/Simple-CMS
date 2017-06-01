@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 class ArticlesController extends AppController {
 
@@ -15,6 +16,7 @@ class ArticlesController extends AppController {
     parent::initialize();
 
     $this->loadModel('Users');
+    $this->loadModel('Images');
     $this->loadComponent('Flash'); // Include the FlashComponent
     $this->loadComponent('Paginator');
   }
@@ -67,15 +69,26 @@ class ArticlesController extends AppController {
   }
 
   public function tableList() {
-    $this->index(5);
+    $this->index(10);
   }
 
   public function add() {
     $article = $this->Articles->newEntity();
+
+    // Save image.
+    if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
+      if ( !($article->img_id = $this->uploadImg()) ) {
+        $this->Flash->error(__('Unable to create article.'));
+        return $this->redirect(['action' => 'tableList']);
+      }
+    }
+
     if ($this->request->is('post')) {
       $article = $this->Articles->patchEntity($article, $this->request->getData());
-      // Added this line.
+
+      // User which create article.
       $article->user_id = $this->Auth->user('id');
+
       if ($this->Articles->save($article)) {
         $this->Flash->success(__('Your article has been saved.'));
 
@@ -88,6 +101,15 @@ class ArticlesController extends AppController {
 
   public function edit($id = null) {
     $article = $this->Articles->get($id);
+
+    // Save image.
+    if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
+      if ( !($article->img_id = $this->uploadImg()) ) {
+        $this->Flash->error(__('Unable to create article.'));
+        return $this->redirect(['action' => 'tableList']);
+      }
+    }
+
     if ($this->request->is(['post', 'put'])) {
       $this->Articles->patchEntity($article, $this->request->getData());
       if ($this->Articles->save($article)) {
@@ -108,5 +130,42 @@ class ArticlesController extends AppController {
 
       return $this->redirect(['action' => 'tableList']);
     }
+  }
+
+  /**
+   * Upload image from form.
+   */
+  public function uploadImg() {
+    $files = $_FILES['Put_your_image'];
+    $file_name = time() . rand(0, 9999) . $files['name'];
+
+    $allow_ext = ['png', 'jpg', 'jpeg', 'gif'];
+    // Get file extension.
+    $file_ext =  substr(strrchr($file_name, '.'), 1);
+
+    if (!in_array($file_ext, $allow_ext)) {
+      $this->Flash->error(__('You can upload only ' . implode(", ", $allow_ext) . ' file.'));
+      return FALSE;
+    }
+
+    if ($files['size'] > 3000000) {
+      $this->Flash->error(__('You can upload image less than 3 MB'));
+      return FALSE;
+    }
+
+    $old_path = $files['tmp_name'];
+    $new_path = WWW_ROOT . '/img/user_upload/article/' . $file_name;
+
+    if (move_uploaded_file($old_path, $new_path)) {
+      $img = $this->Images->newEntity();
+      $img->img_name = $file_name;
+
+      if ($this->Images->save($img)) {
+        return $img->id;
+      }
+    }
+    $this->Flash->error(__('Unable to save file. Something wrong with saving =('));
+
+    return FALSE;
   }
 }

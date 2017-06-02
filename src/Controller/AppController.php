@@ -73,7 +73,17 @@ class AppController extends Controller
         //$this->loadComponent('Csrf');
     }
 
-    public function isAuthorized($user) {
+    public function beforeFilter(Event $event) {
+      $role = $this->Auth->user('role');
+      $user_alias = $this->Auth->user('alias');
+
+      $this->set(compact('role', 'user_alias'));
+
+      return parent::beforeFilter($event);
+    }
+
+
+  public function isAuthorized($user) {
       // Admin can access every action.
       if (isset($user['role']) && $user['role'] === 3) {
         return true;

@@ -127,3 +127,43 @@ input[type="submit"] {
     width: 50%;
     height: auto;
 }
+.img-preview {
+    width: 60%;
+    height: auto;
+    display: block;
+    margin: 5px 0;
+}
+.navbar {
+    border-radius: 0 !important;;
+}
+.form {
+    width: 30%;
+    background: #3b3a36;
+    margin: 0 auto;
+    padding: 0px 20px;
+}
+.form label {
+    color: #e9ece5;
+}
+.form .btn-form {
+    padding: 5px 25px;
+    margin: 10px auto;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    background: white;
+    border: 2px solid white;
+}
+.form h1,
+.form h2,
+.form h3,
+.form h4,
+.form h5,
+.form h6 {
+    color: white
+}
+.btn-form:hover {
+    color: white;
+    background: inherit;
+    border: 2px solid white;
+}

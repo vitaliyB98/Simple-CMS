@@ -1,11 +1,11 @@
-<div class = "users form">
-    <?= $this->Flash->render() ?>
-    <?= $this->Form->create() ?>
+<?= $this->Flash->render() ?>
+<div class = "users form form-login">
+        <?= $this->Form->create() ?>
         <fieldset>
-            <legend><?= __('Please enter your alias and password')?></legend>
+            <h2>Login</h2>
             <?= $this->Form->input('alias', array('type' => 'text')) ?>
             <?= $this->Form->input('password', array('type' => 'password')) ?>
-            <?= $this->Form->submit('Login', array('class' => 'btn btn-primary')) ?>
+            <?= $this->Form->submit('Login', array('class' => 'btn-form')) ?>
         </fieldset>
-    <?= $this->Form->end() ?>
-</div>
+        <?= $this->Form->end() ?>
+ </div>

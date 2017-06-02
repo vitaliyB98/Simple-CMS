@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 
-
 class UsersController extends AppController {
 
   public function initialize() {
     parent::initialize();
     $this->loadModel('Roles');
+    $this->loadModel('Articles');
     $this->loadComponent('Flash'); // Include the FlashComponent
+    $this->loadComponent('Paginator');
   }
 
   public function beforeFilter(Event $event) {
@@ -27,6 +28,32 @@ class UsersController extends AppController {
   public function view($id = null) {
     $user = $this->Users->get($id);
     $this->set(compact('user'));
+  }
+
+  public function profile() {
+    empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
+    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
+
+    if (empty($sort_by)) {
+      $sort_by = 'Articles.created';
+    }
+
+    if (empty($type_sort)) {
+      $type_sort = 'DESC';
+    }
+
+    $userId = $this->Auth->user('id');
+
+    $this->view($userId);
+    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all'), [
+        'conditions' => ['user_id' => 20],
+        'limit' => 10,
+        'order' => [
+          $sort_by => $type_sort,
+        ]
+      ]
+    ));
+
   }
 
   public function login() {
@@ -67,7 +94,12 @@ class UsersController extends AppController {
     $this->set('user', $user);
   }
 
-  public function edit($id = null) {
+  public function edit($id = NULL) {
+
+    if ($id === NULL) {
+      $id = $this->Auth->user('id');
+    }
+
     $user = $this->Users->get($id);
 
     $this->getRole();

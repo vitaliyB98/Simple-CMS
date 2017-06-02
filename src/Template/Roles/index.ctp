@@ -1,6 +1,6 @@
 <?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
 <h1>Roles</h1>
-<?= $this->Html->link('Add role', ['action' => 'add']) ?>
+<?= $this->Html->link('Add role', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
 <table>
     <tr>
         <th>

@@ -12,9 +12,11 @@
                     'minYear' => date('Y') - 70,
                     'maxYear' => date('Y') - 14,
                 ]);
-                echo $this->Form->input('role', array(
-                'options' => $role_name,
-                ));
+                if ($role === 3) {
+                    echo $this->Form->input('role', array(
+                    'options' => $role_name,
+                    ));
+                }
                 echo $this->Form->submit('Edit', array('class' => 'btn btn-primary'));
             ?>
         </fieldset>

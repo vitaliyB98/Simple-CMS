@@ -24,10 +24,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('bootstrap.min.css') ?>
-    <?= $this->Html->css('bootstrap-theme.css') ?>
+    <?= $this->Html->css('/vendor/bootstrap/css/bootstrap.min.css') ?>
+    <?= $this->Html->css('/vendor/bootstrap/css/bootstrap-theme.css') ?>
     <?= $this->Html->css('main.css') ?>
     <?= $this->Html->script('/bower_components/jquery/dist/jquery.js') ?>
 
@@ -48,10 +47,21 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 <a href="/" class="navbar-brand">Mini CMS</a>
             </div>
             <ul class="nav navbar-nav">
+                <li><a href = "/">Home</a></li>
+                <?php if ($role == '3'): ?>
                 <li><a href = "/admin">Admin</a></li>
-                <li><a href = "/users/signup">Sign up</a></li>
-                <li><a href = "/users/login">Login</a></li>
-                <li><a href = "/users/logout">Logout</a></li>
+                <?php endif; ?>
+                <?php if ($role): ?>
+                    <li><a href = "/users/profile">My profile</a></a></li>
+                <?php endif; ?>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <?php if ($role): ?>
+                    <li><a href = "/users/logout">Exit as <b><?= $user_alias ?></b></a></li>
+                <?php else: ?>
+                    <li><a href = "/users/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+                    <li><a href = "/users/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <?php endif; ?>
             </ul>
             </div>
         </div>

@@ -39,11 +39,11 @@ class ArticlesController extends AppController {
     }
 
     if (empty($type_sort)) {
-      $sort_by = 'DESC';
+      $type_sort = 'DESC';
     }
 
     $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users', 'Images']), [
-        'condition' => ['Articles.user_id = Users.id'],
+        'conditions' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
         'order' => [
           $sort_by => $type_sort,
@@ -141,12 +141,18 @@ class ArticlesController extends AppController {
     $img_id = $article->image_id;
 
     // Find img name.
-    $image = $this->Images->get($img_id);
-    $image_name = $image->img_name;
+    if ($img_id != 0) {
+      $image = $this->Images->get($img_id);
+      $image_name = $image->img_name;
+    }
+
 
     if ($this->Articles->delete($article)) {
-      unlink(WWW_ROOT . $image_name);
-      $this->Images->delete($image);
+      if (!empty($image_name) && isset($image)) {
+        unlink(WWW_ROOT . $image_name);
+        $this->Images->delete($image);
+      }
+
       $this->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
 
       return $this->redirect(['action' => 'tableList']);

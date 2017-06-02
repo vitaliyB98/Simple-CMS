@@ -1,7 +1,7 @@
 <?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
 <h1>Users</h1>
 
-<?= $this->Html->link('Add user', ['action' => 'add']) ?>
+<?= $this->Html->link('Add user', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
 
 <table>
     <tr>

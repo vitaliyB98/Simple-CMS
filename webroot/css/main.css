@@ -123,3 +123,7 @@ select {
 input[type="submit"] {
     margin: 10px 0;
 }
+.cboxPhoto {
+    width: 50%;
+    height: auto;
+}

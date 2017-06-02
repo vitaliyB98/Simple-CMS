@@ -9,6 +9,9 @@
             <article>
                 <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>
                 <small><?= $article->created->format(DATE_RFC850) ?> by <b><?= $article->user->name?></b></small>
+                <?php if ($article['image'] !== NULL): ?>
+                <?= $this->Html->image($article->image->img_name, ['class' => 'img img-thumbnail']) ?>
+                <?php endif ?>
                 <p>
                     <?= AppController::summary($article->body, 100) ?>
                 </p>

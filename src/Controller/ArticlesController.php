@@ -42,7 +42,7 @@ class ArticlesController extends AppController {
       $sort_by = 'DESC';
     }
 
-    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users']), [
+    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users', 'Images']), [
         'condition' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
         'order' => [
@@ -114,7 +114,7 @@ class ArticlesController extends AppController {
           // Find img name.
           $image = $this->Images->get($img_id);
           $img_delete = $image->img_name;
-          
+
           // Delete img which we change.
           $this->Images->delete($image);
           unlink(WWW_ROOT . $img_delete);

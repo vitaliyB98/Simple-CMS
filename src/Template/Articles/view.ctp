@@ -7,5 +7,7 @@
 </p>
 
 <?php if ($article['image'] !== NULL): ?>
- <?= $this->Html->image($article['image']['img_name'], ['class' => 'img img-responsive']) ?>
+<a class="colorbox" href="<?= $article['image']['img_name'] ?>">
+<?= $this->Html->image($article['image']['img_name'], ['class' => 'img img-responsive']) ?>
+</a>
 <?php endif ?>

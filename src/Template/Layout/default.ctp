@@ -29,10 +29,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('bootstrap.min.css') ?>
     <?= $this->Html->css('bootstrap-theme.css') ?>
     <?= $this->Html->css('main.css') ?>
+    <?= $this->Html->script('/bower_components/jquery/dist/jquery.js') ?>
+
+    <!-- Color box -->
+    <?= $this->Html->css('/bower_components/jquery-colorbox/example5/colorbox.css') ?>
+    <?= $this->Html->script('/bower_components/jquery-colorbox/jquery.colorbox.js') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <?= $this->Html->script('main.js') ?>
     <?= $this->CKEditor->loadJs(); ?>
 </head>
 <body>

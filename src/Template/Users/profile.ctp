@@ -15,10 +15,16 @@
 <table>
     <tr>
         <th>
-            <?= $this->Html->link('Title', ['action' => 'profile','?' => ['sort_by' => 'Articles.title', 'type_sort' => 'ASC']]) ?>
+            <?= $this->Html->link('Title', [
+                'action' => 'profile',
+                '?' => ['sort_by' => 'Articles.title', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
-            <?= $this->Html->link('Created', ['action' => 'profile','?' => ['sort_by' => 'Articles.created', 'type_sort' => 'DESC']]) ?>
+            <?= $this->Html->link('Created', [
+                'action' => 'profile',
+                '?' => ['sort_by' => 'Articles.created', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
             Action

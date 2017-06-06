@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Controller\ArticlesController;
 use Aura\Intl\Exception;
 use Cake\Event\Event;
 
@@ -32,7 +31,7 @@ class UsersController extends AppController {
   public function beforeRender(Event $event) {
 
     // Allow signUp, logout and login.
-    if (in_array($this->request->getParam('action'), ['signup', 'login', 'logout', 'profile']) || $this->role === 3) {
+    if (in_array($this->request->getParam('action'), ['signup', 'login', 'logout', 'profile', 'view']) || $this->role === 3) {
       return TRUE;
     }
 
@@ -44,9 +43,23 @@ class UsersController extends AppController {
     $this->goHome();
   }
 
-  public function index() {
-    $users = $this->Users->find('all');
-    $this->set(compact('users'));
+  public function index($limit = 10) {
+    empty($_GET['sort_by']) ? $sort_by = 'Users.created' : $sort_by = $_GET['sort_by'];
+    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
+
+    $this->set('users', $this->Paginator->paginate($this->Users->find('all'), [
+        'limit' => $limit,
+        'order' => [
+          $sort_by => $type_sort,
+        ]
+      ]
+    ));
+
+    if ($type_sort == 'ASC') {
+      $this->set(['type_sort' => 'DESC']);
+    } else {
+      $this->set(['type_sort' => 'ASC']);
+    }
   }
 
   public function view($id = null) {
@@ -63,14 +76,6 @@ class UsersController extends AppController {
     empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
     empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
 
-    if (empty($sort_by)) {
-      $sort_by = 'Articles.created';
-    }
-
-    if (empty($type_sort)) {
-      $type_sort = 'DESC';
-    }
-
     $userId = $this->Auth->user('id');
 
     $this->view($userId);
@@ -82,6 +87,12 @@ class UsersController extends AppController {
         ]
       ]
     ));
+
+    if ($type_sort == 'ASC') {
+      $this->set(['type_sort' => 'DESC']);
+    } else {
+      $this->set(['type_sort' => 'ASC']);
+    }
 
   }
 
@@ -147,19 +158,14 @@ class UsersController extends AppController {
   public function delete($id) {
     $this->request->allowMethod(['post', 'delete']);
 
-    $test = new ArticlesController();
     $articles = $this->Articles->find('all', [
       'conditions' => [
         'Articles.user_id' => $id,
       ],
     ]);
-
-    // Delete user`s articles.
     foreach ($articles as $article) {
       $article = $this->Articles->get($article->id);
-      if ($article) {
-        $test->delete($article->id);
-      }
+      $this->Articles->delete($article);
     }
 
     $user = $this->Users->get($id);

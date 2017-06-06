@@ -1,24 +1,51 @@
-<?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
 <h1>Users</h1>
-
+<ul class="nav nav-tabs">
+    <li>
+        <?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
+    </li>
+    <li>
+        <?= $this->Html->link('Posts', ['controller' => 'Articles', 'action' => 'tableList']) ?>
+    </li>
+    <li>
+        <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
+    </li>
+    <li>
+        <?= $this->Html->link('Roles', ['controller' => 'Roles', 'action' => 'index']) ?>
+    </li>
+</ul>
 <?= $this->Html->link('Add user', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
 
 <table>
     <tr>
         <th>
-            ID
+            <?= $this->Html->link('ID', [
+                'action' => 'index',
+                '?' => ['sort_by' => 'Users.id', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
-            Name
+            <?= $this->Html->link('Name', [
+                'action' => 'index',
+                '?' => ['sort_by' => 'Users.name', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
-            Alias
+            <?= $this->Html->link('Alias', [
+                'action' => 'index',
+                '?' => ['sort_by' => 'Users.alias', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
-            Email
+            <?= $this->Html->link('Email', [
+                'action' => 'index',
+                '?' => ['sort_by' => 'Users.email', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
-            Role
+            <?= $this->Html->link('Role', [
+                'action' => 'index',
+                '?' => ['sort_by' => 'Users.role', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
+            ]) ?>
         </th>
         <th>
             Action
@@ -53,3 +80,8 @@
     </tr>
     <?php endforeach; ?>
 </table>
+<ul class="pagination">
+    <?= $this->Paginator->prev('« Previous') ?>
+    <?= $this->Paginator->numbers() ?>
+    <?= $this->Paginator->next('Next »') ?>
+</ul>

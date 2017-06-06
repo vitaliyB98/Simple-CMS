@@ -2,12 +2,6 @@
 <?php if ($role == '3'): ?>
 <div class = "mini-toolbar text-right">
     <?= $this->Html->link('Edit', ['controller' => 'Articles', 'action' => 'edit', $article['id']]) ?>
-    <?= $this->Form->postLink(
-        'Delete',
-            ['action' => 'delete', $article['id']],
-            ['confirm' => 'Are you sure delete?']
-        )
-    ?>
 </div>
 <hr>
 <?php endif ?>

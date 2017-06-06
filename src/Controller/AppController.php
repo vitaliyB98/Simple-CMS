@@ -16,6 +16,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * Application Controller
@@ -25,11 +27,18 @@ use Cake\Event\Event;
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller
-{
-  /**
-   * Include WYSIWYG.
-   */
+class AppController extends Controller {
+
+    /**
+     * User params.
+     */
+    protected $role;
+    protected $user_id;
+    protected $user_alias;
+
+    /**
+     * Include WYSIWYG.
+     */
     public $helpers = ['AkkaCKEditor.CKEditor'];
 
     /**
@@ -61,66 +70,113 @@ class AppController extends Controller
             'action' => 'display',
           ],
           'logoutRedirect' => [
-            'controller' => 'Pages',
-            'action' => 'display',
+            'controller' => 'Users',
+            'action' => 'login',
           ],
         ]);
-        /*
+        $this->Auth->allow(['login', 'logout', 'signup']);
+        /**
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+
+        $this->role = $this->getRole();
+        $this->user_alias = $this->getAlias();
+        $this->user_id = $this->getUserId();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function beforeFilter(Event $event) {
-      $role = $this->Auth->user('role');
-      $user_alias = $this->Auth->user('alias');
 
-      $this->set(compact('role', 'user_alias'));
+      $this->set([
+        'role' => $this->role,
+        'user_alias' => $this->user_alias
+      ]);
 
       return parent::beforeFilter($event);
     }
 
-
-  public function isAuthorized($user) {
-      // Admin can access every action.
-      if (isset($user['role']) && $user['role'] === 3) {
-        return true;
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeRender(Event $event) {
+      if (!array_key_exists('_serialize', $this->viewVars) &&
+          in_array($this->response->type(), ['application/json', 'application/xml'])
+      ) {
+          $this->set('_serialize', TRUE);
       }
-      return false;
+
+      // Method for admin allowed.
+      if (isset($this->role) && ($this->role === 3)) {
+        return TRUE;
+      }
+
+      $this->goHome();
+      return FALSE;
     }
 
     /**
-     * Before render callback.
+     * Gets summary.
      *
-     * @param \Cake\Event\Event $event The beforeRender event.
-     * @return \Cake\Network\Response|null|void
+     * @param $text
+     *   Text for summary.
+     * @param $word_limit
+     *   Number words.
+     *
+     * @return string
+     *   Summary.
      */
-    public function beforeRender(Event $event)
-    {
-        if (!array_key_exists('_serialize', $this->viewVars) &&
-            in_array($this->response->type(), ['application/json', 'application/xml'])
-        ) {
-            $this->set('_serialize', true);
+      static public function summary($text, $word_limit) {
+        $words = explode(" ",$text);
+        $word_limit === $words ? $end = '' : $end = ' ...';
+        return implode(" ",array_splice($words,0,$word_limit)) . $end;
+      }
+
+      /**
+       * Get users role.
+       */
+      private function getRole() {
+        if (!empty($this->Auth->user('role'))) {
+          return $this->Auth->user('role');
         }
-    }
+        return 0;
+      }
 
-  /**
-   * Gets summary.
-   *
-   * @param $text
-   *   Text for summary.
-   * @param $word_limit
-   *   Number words.
-   *
-   * @return string
-   *   Summary.
-   */
-    static public function summary($text, $word_limit) {
-      $words = explode(" ",$text);
-      $word_limit === $words ? $end = '' : $end = ' ...';
-      return implode(" ",array_splice($words,0,$word_limit)) . $end;
-    }
+      /**
+       * Get users alias.
+       */
+      private function getAlias() {
+        if (!empty($this->Auth->user('alias'))) {
+          return $this->Auth->user('alias');
+        }
+        return 'Guest';
+      }
 
+      /**
+       * Get users id.
+       */
+      private function getUserId() {
+        if ($this->Auth->user('id')) {
+          return $this->Auth->user('id');
+        }
+        return FALSE;
+      }
+
+      /**
+       * Get entity id.
+       */
+      protected function getEntityId() {
+        return (int)$this->request->getParam('pass.0');
+      }
+
+      /**
+       * Go home.
+       */
+      public function goHome() {
+        $this->redirect(['controller' => 'Pages', 'action' => 'display']);
+      }
 }

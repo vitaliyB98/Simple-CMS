@@ -5,6 +5,7 @@
 <h1>Welcome</h1>
 
     <div>
+        Sort by:
         <?php foreach ($articles as $article): ?>
             <article>
                 <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>

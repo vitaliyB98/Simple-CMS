@@ -66,8 +66,8 @@ class AppController extends Controller {
             ],
           ],
           'loginRedirect' => [
-            'controller' => 'Pages',
-            'action' => 'display',
+            'controller' => 'Articles',
+            'action' => 'index',
           ],
           'logoutRedirect' => [
             'controller' => 'Users',
@@ -114,8 +114,6 @@ class AppController extends Controller {
       if (isset($this->role) && ($this->role === 3)) {
         return TRUE;
       }
-
-      $this->goHome();
       return FALSE;
     }
 

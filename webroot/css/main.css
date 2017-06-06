@@ -1,3 +1,6 @@
+body {
+    min-height: 100vh;
+}
 p {
     text-align: justify;
 }
@@ -93,6 +96,12 @@ div.message.error:before {
 div.message.hidden {
     height: 0;
 }
+footer.footer {
+    background: #333;
+    height: 20vh;
+    color: white;
+
+}
 
 input[type="text"],
 input[type="password"],
@@ -171,4 +180,10 @@ input[type="submit"] {
 
 .text-center {
     display: block;
+}
+.main-container {
+    min-height: 80vh;
+}
+.nav-tabs {
+    margin-bottom: 20px;
 }

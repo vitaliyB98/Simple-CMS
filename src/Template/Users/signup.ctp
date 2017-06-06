@@ -10,7 +10,7 @@
                 echo $this->Form->input('birth', [
                     'label' => 'Date of birth',
                     'minYear' => date('Y') - 70,
-                    'maxYear' => date('Y') - 14,
+                    'maxYear' => date('Y') - 16,
                 ]);
                 echo $this->Form->submit('Sign up', array('class' => 'btn-form'));
             ?>

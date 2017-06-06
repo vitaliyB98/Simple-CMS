@@ -159,11 +159,16 @@ input[type="submit"] {
 .form h3,
 .form h4,
 .form h5,
-.form h6 {
+.form h6,
+.form a {
     color: white
 }
 .btn-form:hover {
     color: white;
     background: inherit;
     border: 2px solid white;
+}
+
+.text-center {
+    display: block;
 }

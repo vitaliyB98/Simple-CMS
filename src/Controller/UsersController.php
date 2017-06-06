@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Aura\Intl\Exception;
 use Cake\Event\Event;
 
 class UsersController extends AppController {
-
+  /**
+   * {@inheritdoc}
+   */
   public function initialize() {
     parent::initialize();
     $this->loadModel('Roles');
@@ -15,9 +18,29 @@ class UsersController extends AppController {
     $this->loadComponent('Paginator');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
-    $this->Auth->allow(['signUp', 'logout']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function beforeRender(Event $event) {
+
+    // Allow signUp, logout and login.
+    if (in_array($this->request->getParam('action'), ['signup', 'login', 'logout', 'profile']) || $this->role === 3) {
+      return TRUE;
+    }
+
+    $entityId = $this->getEntityId();
+    if ($this->request->getParam('action') === 'edit' && $entityId === $this->user_id) {
+      return TRUE;
+    }
+
+    $this->goHome();
   }
 
   public function index() {
@@ -26,8 +49,13 @@ class UsersController extends AppController {
   }
 
   public function view($id = null) {
-    $user = $this->Users->get($id);
-    $this->set(compact('user'));
+    TRY {
+      $user = $this->Users->get($id);
+      $this->set(compact('user'));
+    } CATCH (Exception $e) {
+      $this->goHome();
+    }
+
   }
 
   public function profile() {
@@ -46,7 +74,7 @@ class UsersController extends AppController {
 
     $this->view($userId);
     $this->set('articles', $this->Paginator->paginate($this->Articles->find('all'), [
-        'conditions' => ['user_id' => 20],
+        'conditions' => ['user_id' => $userId],
         'limit' => 10,
         'order' => [
           $sort_by => $type_sort,
@@ -76,17 +104,17 @@ class UsersController extends AppController {
     $this->add();
   }
 
-  public function add() {
+  public function add($redirect = 'index') {
     $user = $this->Users->newEntity();
 
-    $this->getRole();
+    $this->getRoleList();
 
     if ($this->request->is('post')) {
       $user = $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
         $this->Flash->success(__('User have been created.'));
 
-        $this->redirect(['action' => 'index']);
+        $this->redirect(['action' => $redirect]);
       } else {
         $this->Flash->error(__('Unable to save user.'));
       }
@@ -102,13 +130,13 @@ class UsersController extends AppController {
 
     $user = $this->Users->get($id);
 
-    $this->getRole();
+    $this->getRoleList();
 
     if ($this->request->is(['post', 'put'])) {
       $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
         $this->Flash->success(__('Your user has been updated.'));
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect( $this->referer() );
       }
       $this->Flash->error(__('Unable to update your user'));
     }
@@ -129,7 +157,7 @@ class UsersController extends AppController {
   /**
    * Gets role list.
    */
-  public function getRole() {
+  private function getRoleList() {
     $roles = $this->Roles->find('all');
     foreach ($roles as $role) {
       $role_name[$role->id] = $role->role_name;

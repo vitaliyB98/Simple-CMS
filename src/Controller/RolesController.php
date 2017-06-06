@@ -7,12 +7,24 @@
  */
 namespace App\Controller;
 
+use Cake\Event\Event;
+
 class RolesController extends AppController {
 
   public function initialize() {
     parent::initialize();
 
     $this->loadComponent('Flash'); // Include the FlashComponent
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function beforeRender(Event $event) {
+    parent::beforeRender($event);
+    if ($this->role !== 3) {
+      $this->goHome();
+    }
   }
 
   public function index() {

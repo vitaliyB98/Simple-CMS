@@ -12,6 +12,9 @@ use Cake\ORM\TableRegistry;
 
 class ArticlesController extends AppController {
 
+  /**
+   * {@inheritdoc}
+   */
   public function initialize() {
     parent::initialize();
 
@@ -22,11 +25,37 @@ class ArticlesController extends AppController {
   }
 
   /**
-   * Before filter.
+   * {@inheritdoc}
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
-    $this->Auth->allow(['index', 'view']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function beforeRender(Event $event) {
+    //parent::beforeRender($event);
+    // The owner of an article can edit and delete it.
+    if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
+      $entityId = $this->getEntityId();
+      if ($this->isOwnedBy($entityId, $this->user_id)) {
+        return TRUE;
+      }
+    }
+
+    if (in_array($this->request->getParam('action'), ['index', 'view', 'add']) || $this->role === 3) {
+      return TRUE;
+    }
+
+    $this->goHome();
+  }
+
+  /**
+   * It`s user owner?
+   */
+  private function isOwnedBy($entityId, $userId) {
+    return $this->Articles->exists(['id' => $entityId, 'user_id' => $userId]);
   }
 
   public function index($limit = 4) {
@@ -162,7 +191,7 @@ class ArticlesController extends AppController {
   /**
    * Upload image from form.
    */
-  public function uploadImg() {
+  private function uploadImg() {
     $files = $_FILES['Put_your_image'];
     $file_name = time() . rand(0, 9999) . $files['name'];
 

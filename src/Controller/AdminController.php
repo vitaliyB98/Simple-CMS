@@ -7,10 +7,25 @@
  */
 namespace App\Controller;
 
+use Cake\Event\Event;
+
 class AdminController extends AppController {
 
+  /**
+   * {@inheritdoc}
+   */
   public function index() {
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function beforeRender(Event $event) {
+    parent::beforeRender($event);
+    if (isset($this->role) && ($this->role ==! 3)) {
+      return FALSE;
+    }
   }
 
 }

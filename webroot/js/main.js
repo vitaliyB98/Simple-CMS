@@ -1,5 +1,8 @@
 $(document).ready(function(){
+    var window = {
+      width: $(document).width()
+    };
     jQuery("a.colorbox").colorbox({
-        width: 900
+        width: window.width - window.width/3,
     });
 });

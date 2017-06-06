@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Controller\ArticlesController;
 use Aura\Intl\Exception;
 use Cake\Event\Event;
 
@@ -145,6 +146,21 @@ class UsersController extends AppController {
 
   public function delete($id) {
     $this->request->allowMethod(['post', 'delete']);
+
+    $test = new ArticlesController();
+    $articles = $this->Articles->find('all', [
+      'conditions' => [
+        'Articles.user_id' => $id,
+      ],
+    ]);
+
+    // Delete user`s articles.
+    foreach ($articles as $article) {
+      $article = $this->Articles->get($article->id);
+      if ($article) {
+        $test->delete($article->id);
+      }
+    }
 
     $user = $this->Users->get($id);
     if ($this->Users->delete($user)) {

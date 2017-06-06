@@ -35,7 +35,7 @@ class ArticlesController extends AppController {
    * {@inheritdoc}
    */
   public function beforeRender(Event $event) {
-    //parent::beforeRender($event);
+    parent::beforeRender($event);
     // The owner of an article can edit and delete it.
     if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
       $entityId = $this->getEntityId();
@@ -58,7 +58,7 @@ class ArticlesController extends AppController {
     return $this->Articles->exists(['id' => $entityId, 'user_id' => $userId]);
   }
 
-  public function index($limit = 4) {
+  public function index($limit = 6) {
 
     empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
     empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];

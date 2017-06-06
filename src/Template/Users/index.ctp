@@ -46,7 +46,7 @@
             <?= $this->Form->postLink(
                 'Delete',
                     ['action' => 'delete', $user->id],
-                    ['confirm' => 'Are you sure?']
+                    ['confirm' => 'Delete all user`s post?']
                 )
             ?>
         </td>

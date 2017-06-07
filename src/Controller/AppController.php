@@ -16,8 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -119,7 +118,7 @@ class AppController extends Controller {
     }
 
     /**
-     * Gets summary.
+     * Gets summary method.
      *
      * @param $text
      *   Text for summary.
@@ -136,51 +135,14 @@ class AppController extends Controller {
       }
 
       /**
-       * Get users role.
-       */
-      private function getRole() {
-        if (!empty($this->Auth->user('role_id'))) {
-          return $this->Auth->user('role_id');
-        }
-        return 0;
-      }
-
-      /**
-       * Get users alias.
-       */
-      private function getAlias() {
-        if (!empty($this->Auth->user('alias'))) {
-          return $this->Auth->user('alias');
-        }
-        return 'Guest';
-      }
-
-      /**
-       * Get users id.
-       */
-      private function getUserId() {
-        if ($this->Auth->user('id')) {
-          return $this->Auth->user('id');
-        }
-        return FALSE;
-      }
-
-      /**
-       * Get entity id.
-       */
-      protected function getEntityId() {
-        return (int)$this->request->getParam('pass.0');
-      }
-
-      /**
-       * Go home.
+       * Go home method.
        */
       public function goHome() {
         $this->redirect(['controller' => 'Pages', 'action' => 'display']);
       }
 
       /**
-       * Set log.
+       * Set log method.
        *
        * @param string $text_log
        *   Text log.
@@ -191,4 +153,61 @@ class AppController extends Controller {
         $log->user_id = $this->user_id;
         $this->Logs->save($log);
       }
+
+      /**
+       * Get entity id method.
+       */
+      protected function getEntityId() {
+        return (int)$this->request->getParam('pass.0');
+      }
+
+      /**
+       * Is exist method.
+       *
+       * @param $modelName
+       *   Table name.
+       * @param $property
+       *   Property.
+       * @param $value
+       *   Value.
+       *
+       * @return mixed
+       */
+      protected function isExist($modelName, $property, $value) {
+        $fancyTable = TableRegistry::get($modelName);
+        $exists = $fancyTable->exists([$property => $value]);
+
+        return $exists;
+      }
+
+      /**
+       * Get users role method.
+       */
+      private function getRole() {
+        if (!empty($this->Auth->user('role_id'))) {
+          return $this->Auth->user('role_id');
+        }
+        return 0;
+      }
+
+      /**
+       * Get users alias method.
+       */
+      private function getAlias() {
+        if (!empty($this->Auth->user('alias'))) {
+          return $this->Auth->user('alias');
+        }
+        return 'Guest';
+      }
+
+      /**
+       * Get users id method.
+       */
+      private function getUserId() {
+        if ($this->Auth->user('id')) {
+          return $this->Auth->user('id');
+        }
+        return FALSE;
+      }
+
 }

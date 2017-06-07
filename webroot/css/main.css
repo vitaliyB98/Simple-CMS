@@ -172,6 +172,9 @@ input[type="submit"] {
 .form a {
     color: white
 }
+.form legend {
+    color: white;
+}
 .btn-form:hover {
     color: white;
     background: inherit;

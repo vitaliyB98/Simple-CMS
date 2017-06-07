@@ -84,7 +84,13 @@ class ArticlesController extends AppController {
     $article->hydrate(false);
     $article = $article->toArray();
     $article = $article[0];
+
+    if (empty($article)) {
+      $this->redirect(['action' => 'index']);
+    }
+
     $this->set(compact('article'));
+
   }
 
   public function tableList() {

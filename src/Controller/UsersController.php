@@ -44,22 +44,10 @@ class UsersController extends AppController {
   }
 
   public function index($limit = 10) {
-    empty($_GET['sort_by']) ? $sort_by = 'Users.created' : $sort_by = $_GET['sort_by'];
-    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
+    $users = $this->paginate($this->Users);
 
-    $this->set('users', $this->Paginator->paginate($this->Users->find('all'), [
-        'limit' => $limit,
-        'order' => [
-          $sort_by => $type_sort,
-        ]
-      ]
-    ));
-
-    if ($type_sort == 'ASC') {
-      $this->set(['type_sort' => 'DESC']);
-    } else {
-      $this->set(['type_sort' => 'ASC']);
-    }
+    $this->set(compact('users'));
+    $this->set('_serialize', ['users']);
   }
 
   public function view($id = null) {

@@ -28,8 +28,12 @@ class RolesController extends AppController {
   }
 
   public function index() {
-    $roles = $this->Roles->find('all');
+    $roles = $this->paginate($this->Roles);
+
     $this->set(compact('roles'));
+    $this->set('_serialize', ['roles']);
+    //$roles = $this->Roles->find('all');
+    //$this->set(compact('roles'));
   }
 
   public function add() {

@@ -7,13 +7,13 @@
     <tr>
 
         <th>
-            <?= $this->Html->link('Title', ['action' => 'table-list','?' => ['sort_by' => 'Articles.title', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']]) ?>
+            <?= $this->Paginator->sort('title') ?>
         </th>
         <th>
-            <?= $this->Html->link('Created', ['action' => 'table-list','?' => ['sort_by' => 'Articles.created', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']]) ?>
+            <?= $this->Paginator->sort('created') ?>
         </th>
         <th>
-            <?= $this->Html->link('Author', ['action' => 'table-list', '?' => ['sort_by' => 'Users.name', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']]) ?>
+            <?= $this->Paginator->sort('user_id') ?>
         </th>
         <th>
             Action

@@ -4,10 +4,10 @@
 <table>
     <tr>
         <th>
-            ID
+            <?= $this->Paginator->sort('id') ?>
         </th>
         <th>
-            Role name
+            <?= $this->Paginator->sort('role_name') ?>
         </th>
         <th>
             Action
@@ -33,3 +33,8 @@
     </tr>
     <?php endforeach; ?>
 </table>
+<ul class="pagination">
+    <?= $this->Paginator->prev('« Previous') ?>
+    <?= $this->Paginator->numbers() ?>
+    <?= $this->Paginator->next('Next »') ?>
+</ul>

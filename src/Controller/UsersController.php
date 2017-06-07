@@ -34,7 +34,7 @@ class UsersController extends AppController {
    */
   public function beforeRender(Event $event) {
 
-    // Allow signUp, logout and login.
+    // Allow signUp, profile, logout and login.
     if (in_array($this->request->getParam('action'), ['signup', 'login', 'logout', 'profile', 'view']) || $this->role === 3) {
       return TRUE;
     }

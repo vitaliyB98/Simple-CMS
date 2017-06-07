@@ -139,8 +139,8 @@ class AppController extends Controller {
        * Get users role.
        */
       private function getRole() {
-        if (!empty($this->Auth->user('role'))) {
-          return $this->Auth->user('role');
+        if (!empty($this->Auth->user('role_id'))) {
+          return $this->Auth->user('role_id');
         }
         return 0;
       }

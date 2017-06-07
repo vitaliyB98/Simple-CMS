@@ -17,7 +17,7 @@
             <?= $this->Paginator->sort('email') ?>
         </th>
         <th>
-            <?= $this->Paginator->sort('role') ?>
+            <?= __('Role') ?>
         </th>
         <th>
             Action

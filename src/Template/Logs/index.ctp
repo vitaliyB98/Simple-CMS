@@ -29,7 +29,7 @@
             <tr>
                 <td><?= $this->Number->format($log->id) ?></td>
                 <td><?= h($log->body_log) ?></td>
-                <td><?= h($log->user_id) ?></td>
+                <td><?= empty($log->user->id) ? 'guest' : h($log->user->name) ?></td>
                 <td><?= h($log->created) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $log->id]) ?>
@@ -42,9 +42,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <ul class="pagination">
-        <?= $this->Paginator->prev('« Previous') ?>
-        <?= $this->Paginator->numbers() ?>
-        <?= $this->Paginator->next('Next »') ?>
-    </ul>
+    <?= $this->element('/paginator'); ?>
 </div>

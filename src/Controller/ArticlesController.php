@@ -62,7 +62,6 @@ class ArticlesController extends AppController {
 
     $articles = $this->paginate(
       $this->Articles->find('all')->contain(['Users', 'Images']), [
-        'conditions' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
         'order' => [
           'Articles.created' => 'DESC',

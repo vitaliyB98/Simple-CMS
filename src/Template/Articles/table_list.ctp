@@ -28,7 +28,14 @@
             <?= $article->created->format(DATE_RFC850) ?>
         </td>
         <td>
-            <?= $article->user->name ?>
+            <?php
+                if (!empty($article->user->id)) {
+                    echo $this->Html->link($article->user->name,
+                        ['controller' => 'Users', 'action' => 'view', $article->user->id]);
+                } else {
+                    echo __('Author was deleted');
+                }
+            ?>
         </td>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $article->id]) ?>
@@ -42,8 +49,4 @@
     </tr>
     <?php endforeach; ?>
 </table>
-<ul class="pagination">
-    <?= $this->Paginator->prev('« Previous') ?>
-    <?= $this->Paginator->numbers() ?>
-    <?= $this->Paginator->next('Next »') ?>
-</ul>
+<?= $this->element('/paginator'); ?>

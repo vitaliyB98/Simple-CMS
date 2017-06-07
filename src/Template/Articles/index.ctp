@@ -2,7 +2,7 @@
 <?php
     use App\Controller\AppController;
 ?>
-<h1>Welcome</h1>
+<h1><?= __('Welcome') ?></h1>
 
     <div>
         <div class="dropdown">
@@ -10,10 +10,13 @@
                 <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
+                    <?= $this->Paginator->sort('user_id', 'Author') ?>
+                </li>
+                <li>
                     <?= $this->Paginator->sort('title') ?>
                 </li>
                 <li>
-                    <?= $this->Paginator->sort('created') ?>
+                    <?= $this->Paginator->sort('created', 'Date') ?>
                 </li>
             </ul>
         </div>
@@ -23,7 +26,14 @@
                 <h3><?= $this->Html->link($article->title, ['action' => 'view', $article->id]) ?></h3>
                 <small>
                     <?= $article->created->format(DATE_RFC850) ?> by
-                    <?= $this->Html->link($article->user->name, ['controller' => 'Users', 'action' => 'view', $article->user->id]) ?>
+                    <?php
+                        if (!empty($article->user->id)) {
+                            echo $this->Html->link($article->user->name,
+                                ['controller' => 'Users', 'action' => 'view', $article->user->id]);
+                        } else {
+                            echo __('Author was deleted');
+                        }
+                    ?>
                 </small>
                 <?php if ($article['image'] !== NULL): ?>
                 <?= $this->Html->image($article->image->img_name, ['class' => 'img img-preview']) ?>

@@ -12,7 +12,7 @@
             'minYear' => date('Y') - 70,
             'maxYear' => date('Y') - 16,
             ]);
-            echo $this->Form->input('role', array(
+            echo $this->Form->input('role_id', array(
             'options' => $role_name,
             ));
             echo $this->Form->submit('Edit', array('class' => 'btn btn-primary'));

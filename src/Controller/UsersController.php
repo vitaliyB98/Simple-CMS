@@ -44,7 +44,9 @@ class UsersController extends AppController {
   }
 
   public function index($limit = 10) {
-    $users = $this->paginate($this->Users);
+    $users = $this->paginate($this->Users->find('all')->contain('Roles'), [
+      'limit' => $limit
+    ]);
 
     $this->set(compact('users'));
     $this->set('_serialize', ['users']);
@@ -141,7 +143,9 @@ class UsersController extends AppController {
     if ($this->request->is(['post', 'put'])) {
       $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
-        $this->Flash->success(__('Your user has been updated.'));
+        $log = 'Your user has been updated.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
         return $this->redirect( $this->referer() );
       }
       $log = 'Unable to update your user';

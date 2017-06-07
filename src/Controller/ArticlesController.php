@@ -60,23 +60,19 @@ class ArticlesController extends AppController {
 
   public function index($limit = 6) {
 
-    empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
-    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
-
-    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all')->contain(['Users', 'Images']), [
+    $articles = $this->paginate(
+      $this->Articles->find('all')->contain(['Users', 'Images']), [
         'conditions' => ['Articles.user_id = Users.id'],
         'limit' => $limit,
         'order' => [
-          $sort_by => $type_sort,
+          'Articles.created' => 'DESC',
         ]
       ]
-    ));
+    );
 
-    if ($type_sort == 'ASC') {
-      $this->set(['type_sort' => 'DESC']);
-    } else {
-      $this->set(['type_sort' => 'ASC']);
-    }
+    $this->set(compact('articles'));
+    $this->set('_serialize', ['articles']);
+
   }
 
   public function view($id = 1) {

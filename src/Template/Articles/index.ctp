@@ -10,14 +10,10 @@
                 <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                    <?= $this->Html->link('Created', [
-                        'action' => 'index',
-                        '?' => ['sort_by' => 'Articles.created', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']]) ?>
+                    <?= $this->Paginator->sort('title') ?>
                 </li>
                 <li>
-                    <?= $this->Html->link('Title', [
-                        'action' => 'index',
-                        '?' => ['sort_by' => 'Articles.title', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']]) ?>
+                    <?= $this->Paginator->sort('created') ?>
                 </li>
             </ul>
         </div>

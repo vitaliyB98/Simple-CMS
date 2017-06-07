@@ -5,34 +5,19 @@
 <table>
     <tr>
         <th>
-            <?= $this->Html->link('ID', [
-                'action' => 'index',
-                '?' => ['sort_by' => 'Users.id', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('id') ?>
         </th>
         <th>
-            <?= $this->Html->link('Name', [
-                'action' => 'index',
-                '?' => ['sort_by' => 'Users.name', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('name') ?>
         </th>
         <th>
-            <?= $this->Html->link('Alias', [
-                'action' => 'index',
-                '?' => ['sort_by' => 'Users.alias', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('alias') ?>
         </th>
         <th>
-            <?= $this->Html->link('Email', [
-                'action' => 'index',
-                '?' => ['sort_by' => 'Users.email', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('email') ?>
         </th>
         <th>
-            <?= $this->Html->link('Role', [
-                'action' => 'index',
-                '?' => ['sort_by' => 'Users.role', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('role') ?>
         </th>
         <th>
             Action

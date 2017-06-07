@@ -12,14 +12,18 @@ use Cake\Event\Event;
 class AdminController extends AppController {
 
   /**
-   * {@inheritdoc}
+   * Index method.
    */
   public function index() {
     $this->redirect(['controller' => 'Logs', 'action' => 'index']);
   }
 
   /**
-   * {@inheritdoc}
+   * Before render method.
+   *
+   * @param $event
+   *
+   * @return bool
    */
   public function beforeRender(Event $event) {
     parent::beforeRender($event);

@@ -13,7 +13,7 @@ use Cake\ORM\TableRegistry;
 class ArticlesController extends AppController {
 
   /**
-   * {@inheritdoc}
+   * Initialize method.
    */
   public function initialize() {
     parent::initialize();
@@ -25,14 +25,25 @@ class ArticlesController extends AppController {
   }
 
   /**
-   * {@inheritdoc}
+   * Before filter method.
+   *
+   * @param $event
+   *   Object.
+   *
+   * @return mixed
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
   }
 
   /**
-   * {@inheritdoc}
+   * Before render method.
+   *
+   * @param $event
+   *   Object.
+   *
+   * @return bool
+   *    Access status.
    */
   public function beforeRender(Event $event) {
     parent::beforeRender($event);
@@ -49,17 +60,33 @@ class ArticlesController extends AppController {
     }
 
     $this->goHome();
+    return TRUE;
   }
 
   /**
    * It`s user owner?
+   *
+   * @param int $entityId
+   *   Entity ID.
+   * @param int $userId
+   *   User ID.
+   *
+   * @return mixed
+   *   Is owned by?
    */
   private function isOwnedBy($entityId, $userId) {
     return $this->Articles->exists(['id' => $entityId, 'user_id' => $userId]);
   }
 
+  /**
+   * Index method.
+   *
+   * @param int $limit
+   *   Limit records.
+   *
+   * @return bool
+   */
   public function index($limit = 6) {
-
     $articles = $this->paginate(
       $this->Articles->find('all')->contain(['Users', 'Images']), [
         'limit' => $limit,
@@ -72,8 +99,17 @@ class ArticlesController extends AppController {
     $this->set(compact('articles'));
     $this->set('_serialize', ['articles']);
 
+    return NULL;
   }
 
+  /**
+   * View method.
+   *
+   * @param int $id
+   *   Entity id.
+   *
+   * @return bool
+   */
   public function view($id = 1) {
     $article = $this->Articles->find('all', [
       'conditions' => [
@@ -90,13 +126,25 @@ class ArticlesController extends AppController {
     }
 
     $this->set(compact('article'));
-
+    return NULL;
   }
 
+  /**
+   * Table list method.
+   *
+   * @return bool
+   */
   public function tableList() {
     $this->index(10);
+
+    return NULL;
   }
 
+  /**
+   * Add articles method.
+   *
+   * @return mixed
+   */
   public function add() {
     $article = $this->Articles->newEntity();
 
@@ -128,8 +176,16 @@ class ArticlesController extends AppController {
       $this->Flash->error(__($log));
     }
     $this->set('article', $article);
+    return NULL;
   }
 
+  /**
+   * Edit method.
+   *
+   * @param null $id
+   *   Entity id.
+   * @return mixed
+   */
   public function edit($id = null) {
     $article = $this->Articles->get($id);
     $img_id = $article->image_id;
@@ -171,8 +227,16 @@ class ArticlesController extends AppController {
       $this->Flash->error(__($log));
     }
     $this->set('article', $article);
+    return NULL;
   }
 
+  /**
+   * Delete method.
+   *
+   * @param int $id
+   *   Entity id.
+   * @return mixed
+   */
   public function delete($id) {
     $this->request->allowMethod(['post', 'delete']);
 
@@ -197,10 +261,15 @@ class ArticlesController extends AppController {
 
       return $this->redirect(['action' => 'tableList']);
     }
+
+    return NULL;
   }
 
   /**
-   * Upload image from form.
+   * Upload image from form method.
+   *
+   * @return mixed
+   *   If img save successfully return id.
    */
   private function uploadImg() {
     $files = $_FILES['Put_your_image'];

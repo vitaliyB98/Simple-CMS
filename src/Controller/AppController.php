@@ -51,44 +51,50 @@ class AppController extends Controller {
      */
     public function initialize()
     {
-        parent::initialize();
+      parent::initialize();
 
-        $this->loadModel('Logs');
-        $this->loadComponent('RequestHandler');
-        $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
-          'authenticate' => [
-            'Form' => [
-              'fields' => [
-                'username' => 'alias',
-                'password' => 'password',
-              ],
+      $this->loadModel('Logs');
+      $this->loadComponent('RequestHandler');
+      $this->loadComponent('Flash');
+      $this->loadComponent('Auth', [
+        'authenticate' => [
+          'Form' => [
+            'fields' => [
+              'username' => 'alias',
+              'password' => 'password',
             ],
           ],
-          'loginRedirect' => [
-            'controller' => 'Articles',
-            'action' => 'index',
-          ],
-          'logoutRedirect' => [
-            'controller' => 'Users',
-            'action' => 'login',
-          ],
-        ]);
-        $this->Auth->allow(['login', 'logout', 'signup']);
-        /**
-         * Enable the following components for recommended CakePHP security settings.
-         * see http://book.cakephp.org/3.0/en/controllers/components/security.html
-         */
-        //$this->loadComponent('Security');
-        //$this->loadComponent('Csrf');
+        ],
+        'loginRedirect' => [
+          'controller' => 'Articles',
+          'action' => 'index',
+        ],
+        'logoutRedirect' => [
+          'controller' => 'Users',
+          'action' => 'login',
+        ],
+      ]);
+      $this->Auth->allow(['login', 'logout', 'signup']);
+      /**
+       * Enable the following components for recommended CakePHP security settings.
+       * see http://book.cakephp.org/3.0/en/controllers/components/security.html
+       */
+      //$this->loadComponent('Security');
+      //$this->loadComponent('Csrf');
 
-        $this->role = $this->getRole();
-        $this->user_alias = $this->getAlias();
-        $this->user_id = $this->getUserId();
+      $this->role = $this->getRole();
+      $this->user_alias = $this->getAlias();
+      $this->user_id = $this->getUserId();
     }
 
     /**
-     * {@inheritdoc}
+     * Before Filter method.
+     *
+     * @param $event
+     *   Event object.
+     *
+     * @return object
+     *    Event object.
      */
     public function beforeFilter(Event $event) {
 
@@ -101,7 +107,11 @@ class AppController extends Controller {
     }
 
     /**
-     * {@inheritdoc}
+     * Before Render method.
+     *
+     * @param $event
+     *
+     * @return bool
      */
     public function beforeRender(Event $event) {
       if (!array_key_exists('_serialize', $this->viewVars) &&
@@ -128,86 +138,99 @@ class AppController extends Controller {
      * @return string
      *   Summary.
      */
-      static public function summary($text, $word_limit) {
-        $words = explode(" ",$text);
-        $word_limit === $words ? $end = '' : $end = ' ...';
-        return implode(" ",array_splice($words,0,$word_limit)) . $end;
-      }
+    static public function summary($text, $word_limit) {
+      $words = explode(" ",$text);
+      $word_limit === $words ? $end = '' : $end = ' ...';
+      return implode(" ",array_splice($words,0,$word_limit)) . $end;
+    }
 
-      /**
-       * Go home method.
-       */
-      public function goHome() {
-        $this->redirect(['controller' => 'Pages', 'action' => 'display']);
-      }
+    /**
+     * Go home method.
+     */
+    public function goHome() {
+      $this->redirect(['controller' => 'Pages', 'action' => 'display']);
+    }
 
-      /**
-       * Set log method.
-       *
-       * @param string $text_log
-       *   Text log.
-       */
-      public function setLog($text_log = 'error') {
-        $log = $this->Logs->newEntity();
-        $log->body_log = $text_log;
-        $log->user_id = $this->user_id;
-        $this->Logs->save($log);
-      }
+    /**
+     * Set log method.
+     *
+     * @param string $text_log
+     *   Text log.
+     */
+    public function setLog($text_log = 'error') {
+      $log = $this->Logs->newEntity();
+      $log->body_log = $text_log;
+      $log->user_id = $this->user_id;
+      $this->Logs->save($log);
+    }
 
-      /**
-       * Get entity id method.
-       */
-      protected function getEntityId() {
-        return (int)$this->request->getParam('pass.0');
-      }
+    /**
+     * Get entity id method.
+     *
+     * @return int
+     *    Entity id from request.
+     */
+    protected function getEntityId() {
+      return (int)$this->request->getParam('pass.0');
+    }
 
-      /**
-       * Is exist method.
-       *
-       * @param $modelName
-       *   Table name.
-       * @param $property
-       *   Property.
-       * @param $value
-       *   Value.
-       *
-       * @return mixed
-       */
-      protected function isExist($modelName, $property, $value) {
-        $fancyTable = TableRegistry::get($modelName);
-        $exists = $fancyTable->exists([$property => $value]);
+    /**
+     * Is exist method.
+     *
+     * @param $modelName
+     *   Table name.
+     * @param $property
+     *   Property.
+     * @param $value
+     *   Value.
+     *
+     * @return mixed
+     *   Exist status.
+     */
+    protected function isExist($modelName, $property, $value) {
+      $fancyTable = TableRegistry::get($modelName);
+      $exists = $fancyTable->exists([$property => $value]);
 
-        return $exists;
-      }
+      return $exists;
+    }
 
-      /**
-       * Get users role method.
-       */
-      private function getRole() {
-        if (!empty($this->Auth->user('role_id'))) {
-          return $this->Auth->user('role_id');
-        }
-        return 0;
+    /**
+     * Get users role method.
+     *
+     * @return int
+     *   Role id.
+     */
+    private function getRole() {
+      if (!empty($this->Auth->user('role_id'))) {
+        return $this->Auth->user('role_id');
       }
+      return 0;
+    }
 
-      /**
-       * Get users alias method.
-       */
-      private function getAlias() {
-        if (!empty($this->Auth->user('alias'))) {
-          return $this->Auth->user('alias');
-        }
-        return 'Guest';
+    /**
+     * Get users alias method.
+     *
+     * @return string
+     *    User alias.
+     */
+    private function getAlias() {
+      if (!empty($this->Auth->user('alias'))) {
+        return $this->Auth->user('alias');
       }
+      return 'Guest';
+    }
 
-      /**
-       * Get users id method.
-       */
-      private function getUserId() {
-        if ($this->Auth->user('id')) {
-          return $this->Auth->user('id');
-        }
-        return FALSE;
+    /**
+     * Get users id method.
+     *
+     * @return mixed
+     *    User id if exist.
+     */
+    private function getUserId() {
+      if ($this->Auth->user('id')) {
+        return $this->Auth->user('id');
       }
+      return FALSE;
+    }
 
 }

@@ -25,6 +25,7 @@ class LogsController extends AppController
      *
      * @param int $limit
      *   Number row.
+     *
      * @return \Cake\Http\Response|null
      */
     public function index($limit = 20)
@@ -44,7 +45,9 @@ class LogsController extends AppController
      * View method
      *
      * @param string|null $id Log id.
+     *
      * @return \Cake\Http\Response|null
+     *
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -125,13 +128,18 @@ class LogsController extends AppController
 
     /**
      * Delete all logs.
+     *
+     * @return \Cake\Http\Response|null Redirects to index.
      */
     public function deleteAll() {
       $this->request->allowMethod(['post', 'deleteAll']);
       $logs = $this->Logs->find('all');
+
       foreach ($logs as $log) {
         $this->Logs->delete($log);
       }
+
       return $this->redirect(['action' => 'index']);
     }
+
 }

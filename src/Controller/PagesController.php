@@ -31,12 +31,24 @@ class PagesController extends AppController {
 
   /**
    * Before filter.
+   *
+   * @param $event
+   *   Event object.
+   *
+   * @return mixed
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
     $this->Auth->allow(['display']);
+
+    return TRUE;
   }
 
+  /**
+   * Display method.
+   *
+   * @return \Cake\Http\Response|null
+   */
   public function display() {
     return $this->redirect(['controller' => 'articles', 'action' => 'index']);
   }

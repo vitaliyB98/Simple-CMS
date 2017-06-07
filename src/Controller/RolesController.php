@@ -11,31 +11,50 @@ use Cake\Event\Event;
 
 class RolesController extends AppController {
 
+  /**
+   * Initialize method.
+   */
   public function initialize() {
     parent::initialize();
-
-    $this->loadComponent('Flash'); // Include the FlashComponent
+    $this->loadComponent('Flash');
   }
 
   /**
-   * {@inheritdoc}
+   * Before render method.
+   *
+   * @param $event
+   *   Event object.
+   *
+   * @return bool
    */
   public function beforeRender(Event $event) {
     parent::beforeRender($event);
     if ($this->role !== 3) {
       $this->goHome();
     }
+
+    return TRUE;
   }
 
+  /**
+   * Index method.
+   *
+   * @return bool
+   */
   public function index() {
     $roles = $this->paginate($this->Roles);
 
     $this->set(compact('roles'));
     $this->set('_serialize', ['roles']);
-    //$roles = $this->Roles->find('all');
-    //$this->set(compact('roles'));
+
+    return NULL;
   }
 
+  /**
+   * Add method.
+   *
+   * @return bool
+   */
   public function add() {
     $role = $this->Roles->newEntity();
 
@@ -54,8 +73,18 @@ class RolesController extends AppController {
       }
     }
     $this->set('role', $role);
+
+    return NULL;
   }
 
+  /**
+   * Edit method.
+   *
+   * @param null $id
+   *   Entity ID.
+   *
+   * @return mixed
+   */
   public function edit($id = null) {
     $role = $this->Roles->get($id);
     if ($this->request->is(['post', 'put'])) {
@@ -71,8 +100,18 @@ class RolesController extends AppController {
       $this->Flash->error(__($log));
     }
     $this->set('role', $role);
+
+    return NULL;
   }
 
+  /**
+   * Delete method.
+   *
+   * @param $id
+   *   Entity Id.
+   *
+   * @return mixed
+   */
   public function delete($id) {
     $this->request->allowMethod(['post', 'delete']);
 
@@ -84,5 +123,7 @@ class RolesController extends AppController {
 
       return $this->redirect(['action' => 'index']);
     }
+
+    return NULL;
   }
 }

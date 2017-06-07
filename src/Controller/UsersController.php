@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-use App\Controller\AppController;
-use Aura\Intl\Exception;
 use Cake\Event\Event;
 
 class UsersController extends AppController {
+
   /**
-   * {@inheritdoc}
+   * Initialize method.
    */
   public function initialize() {
     parent::initialize();
@@ -19,14 +18,19 @@ class UsersController extends AppController {
   }
 
   /**
-   * {@inheritdoc}
+   * Before filter method.
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
   }
 
   /**
-   * {@inheritdoc}
+   * Before render.
+   *
+   * @param $event
+   *   Event object.
+   *
+   * @return bool
    */
   public function beforeRender(Event $event) {
 
@@ -41,8 +45,17 @@ class UsersController extends AppController {
     }
 
     $this->goHome();
+
+    return NULL;
   }
 
+  /**
+   * Index method.
+   *
+   * @param int $limit
+   *
+   * @return bool
+   */
   public function index($limit = 10) {
     $users = $this->paginate($this->Users->find('all')->contain('Roles'), [
       'limit' => $limit
@@ -50,18 +63,32 @@ class UsersController extends AppController {
 
     $this->set(compact('users'));
     $this->set('_serialize', ['users']);
+
+    return NULL;
   }
 
+  /**
+   * View method.
+   *
+   * @param null $id
+   *   Entity id.
+   *
+   * @return bool
+   */
   public function view($id = null) {
-    TRY {
-      $user = $this->Users->get($id);
-      $this->set(compact('user'));
-    } CATCH (Exception $e) {
-      $this->goHome();
-    }
+    $user = $this->Users->get($id);
+    $this->set(compact('user'));
 
+    $this->goHome();
+
+    return NULL;
   }
 
+  /**
+   * Profile method.
+   *
+   * @return bool
+   */
   public function profile() {
     empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
     empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
@@ -69,6 +96,7 @@ class UsersController extends AppController {
     $userId = $this->Auth->user('id');
 
     $this->view($userId);
+
     $this->set('articles', $this->Paginator->paginate($this->Articles->find('all'), [
         'conditions' => ['user_id' => $userId],
         'limit' => 10,
@@ -84,8 +112,14 @@ class UsersController extends AppController {
       $this->set(['type_sort' => 'ASC']);
     }
 
+    return NULL;
   }
 
+  /**
+   * Login method.
+   *
+   * @return mixed
+   */
   public function login() {
     if ($this->request->is('post')) {
       $user = $this->Auth->identify();
@@ -99,16 +133,37 @@ class UsersController extends AppController {
       $this->setLog($log);
       $this->Flash->error(__($log));
     }
+
+    return NULL;
   }
 
+  /**
+   * Logout method.
+   *
+   * @return \Cake\Http\Response|null
+   */
   public function logout() {
+    $log = 'User with alias `' . $this->user_alias . '` logout`.';
+    $this->setLog($log);
+
     return $this->redirect($this->Auth->logout());
   }
 
+  /**
+   * Sign up method.
+   */
   public function signUp() {
     $this->add();
   }
 
+  /**
+   * Add method.
+   *
+   * @param string $redirect
+   *   Redirect param.
+   *
+   * @return mixed
+   */
   public function add($redirect = 'index') {
     $user = $this->Users->newEntity();
 
@@ -136,8 +191,17 @@ class UsersController extends AppController {
     }
     $this->set('user', $user);
 
+    return NULL;
   }
 
+  /**
+   * Edit method.
+   *
+   * @param null $id
+   *   Entity ID.
+   *
+   * @return mixed
+   */
   public function edit($id = NULL) {
 
     if ($id === NULL) {
@@ -161,8 +225,17 @@ class UsersController extends AppController {
       $this->Flash->error(__($log));
     }
     $this->set('user', $user);
+
+    return NULL;
   }
 
+  /**
+   * Delete method.
+   *
+   * @param $id
+   *   Entity ID.
+   * @return mixed
+   */
   public function delete($id) {
     $this->request->allowMethod(['post', 'delete']);
 
@@ -184,6 +257,8 @@ class UsersController extends AppController {
 
       return $this->redirect(['action' => 'index']);
     }
+
+    return NULL;
   }
 
   /**

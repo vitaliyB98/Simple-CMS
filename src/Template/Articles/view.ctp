@@ -6,7 +6,7 @@
 <hr>
 <?php endif ?>
 <h3><?= $article['title'] ?></h3>
-<small><?= $article['created'] ?> by <b><?= $article['user']['name'] ?></b></small>
+<small><?= $article['created'] ?> by <?= $this->Html->link($article['user']['name'], ['controller' => 'Users', 'action' => 'view', $article['user']['id']]) ?></small>
 
 <?php if ($article['image'] !== NULL): ?>
 <a class="colorbox" href="<?= $article['image']['img_name'] ?>">

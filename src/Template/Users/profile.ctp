@@ -6,7 +6,6 @@
     <h4>Alias: <?= $user->alias ?></h4>
     <h4>Email: <?= $user->email ?></h4>
     <h4>Birth day: <?= $user->birth ?></h4>
-    <h4>Role: <?= $role ?></h4>
 </fieldset>
 
 

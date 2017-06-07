@@ -79,7 +79,9 @@ class UsersController extends AppController {
     $user = $this->Users->get($id);
     $this->set(compact('user'));
 
-    $this->goHome();
+    if (empty($user)) {
+      $this->goHome();
+    }
 
     return NULL;
   }

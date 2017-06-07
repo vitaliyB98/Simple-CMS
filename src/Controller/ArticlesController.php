@@ -122,7 +122,7 @@ class ArticlesController extends AppController {
     $article = $article[0];
 
     if (empty($article)) {
-      $this->redirect(['action' => 'index']);
+      $this->goHome();
     }
 
     $this->set(compact('article'));

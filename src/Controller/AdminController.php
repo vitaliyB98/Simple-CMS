@@ -15,7 +15,7 @@ class AdminController extends AppController {
    * {@inheritdoc}
    */
   public function index() {
-
+    $this->redirect(['controller' => 'Logs', 'action' => 'index']);
   }
 
   /**

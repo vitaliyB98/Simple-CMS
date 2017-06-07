@@ -1,18 +1,5 @@
-<h1>Users</h1>
-<ul class="nav nav-tabs">
-    <li>
-        <?= $this->Html->link('Back', ['controller' => 'Admin', 'action' => 'index']) ?>
-    </li>
-    <li>
-        <?= $this->Html->link('Posts', ['controller' => 'Articles', 'action' => 'tableList']) ?>
-    </li>
-    <li>
-        <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']) ?>
-    </li>
-    <li>
-        <?= $this->Html->link('Roles', ['controller' => 'Roles', 'action' => 'index']) ?>
-    </li>
-</ul>
+<h1><?= __('Users') ?></h1>
+<?= $this->element('/admintabs'); ?>
 <?= $this->Html->link('Add user', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
 
 <table>

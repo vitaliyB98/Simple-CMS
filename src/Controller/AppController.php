@@ -54,6 +54,7 @@ class AppController extends Controller {
     {
         parent::initialize();
 
+        $this->loadModel('Logs');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
@@ -176,5 +177,18 @@ class AppController extends Controller {
        */
       public function goHome() {
         $this->redirect(['controller' => 'Pages', 'action' => 'display']);
+      }
+
+      /**
+       * Set log.
+       *
+       * @param string $text_log
+       *   Text log.
+       */
+      public function setLog($text_log = 'error') {
+        $log = $this->Logs->newEntity();
+        $log->body_log = $text_log;
+        $log->user_id = $this->user_id;
+        $this->Logs->save($log);
       }
 }

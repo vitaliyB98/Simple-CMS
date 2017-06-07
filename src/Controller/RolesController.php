@@ -38,11 +38,15 @@ class RolesController extends AppController {
     if ($this->request->is('post')) {
       $role = $this->Roles->patchEntity($role, $this->request->getData());
       if ($this->Roles->save($role)) {
-        $this->Flash->success(__('Role have been created.'));
+        $log = 'Role have been created.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
 
         $this->redirect(['action' => 'index']);
       } else {
-        $this->Flash->error(__('Unable to save role.'));
+        $log = 'Unable to save role.';
+        $this->setLog($log);
+        $this->Flash->error(__($log));
       }
     }
     $this->set('role', $role);
@@ -53,10 +57,14 @@ class RolesController extends AppController {
     if ($this->request->is(['post', 'put'])) {
       $this->Roles->patchEntity($role, $this->request->getData());
       if ($this->Roles->save($role)) {
-        $this->Flash->success(__('Your role has been updated.'));
+        $log = 'Your role has been updated.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
         return $this->redirect(['action' => 'index']);
       }
-      $this->Flash->error(__('Unable to update your role'));
+      $log = 'Unable to update your role';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
     }
     $this->set('role', $role);
   }
@@ -66,7 +74,9 @@ class RolesController extends AppController {
 
     $role = $this->Roles->get($id);
     if ($this->Roles->delete($role)) {
-      $this->Flash->success(__('The role with id: {0} has been deleted.', h($id)));
+      $log = 'The role with id: ' . $id . ' has been deleted.';
+      $this->setLog($log);
+      $this->Flash->success(__($log));
 
       return $this->redirect(['action' => 'index']);
     }

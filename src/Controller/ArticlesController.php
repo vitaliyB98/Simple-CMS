@@ -102,7 +102,9 @@ class ArticlesController extends AppController {
     // Save image.
     if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
       if ( !($article->image_id = $this->uploadImg()) ) {
-        $this->Flash->error(__('Unable to create article.'));
+        $log = 'Unable to create article.';
+        $this->setLog($log);
+        $this->Flash->error(__($log));
         return $this->redirect(['action' => 'tableList']);
       }
     }
@@ -114,11 +116,15 @@ class ArticlesController extends AppController {
       $article->user_id = $this->Auth->user('id');
 
       if ($this->Articles->save($article)) {
-        $this->Flash->success(__('Your article has been saved.'));
+        $log = 'Your article has been saved.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
 
         return $this->redirect(['action' => 'tableList']);
       }
-      $this->Flash->error(__('Unable to add your article.'));
+      $log = 'Unable to add your article.';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
     }
     $this->set('article', $article);
   }
@@ -130,8 +136,9 @@ class ArticlesController extends AppController {
     // Save image.
     if (isset($_FILES['Put_your_image']['name']) && !empty($_FILES['Put_your_image']['name'])) {
       if ( !($article->image_id = $this->uploadImg()) ) {
-
-        $this->Flash->error(__('Unable to create article.'));
+        $log = 'Unable to create article.';
+        $this->setLog($log);
+        $this->Flash->error(__($log));
         return $this->redirect(['action' => 'tableList']);
 
       } else {
@@ -153,10 +160,14 @@ class ArticlesController extends AppController {
     if ($this->request->is(['post', 'put'])) {
       $this->Articles->patchEntity($article, $this->request->getData());
       if ($this->Articles->save($article)) {
-        $this->Flash->success(__('Your article has been updated.'));
+        $log = 'Your article has been updated.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
         return $this->redirect(['action' => 'tableList']);
       }
-      $this->Flash->error(__('Unable to update your article'));
+      $log = 'Unable to update your article';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
     }
     $this->set('article', $article);
   }
@@ -179,8 +190,9 @@ class ArticlesController extends AppController {
         unlink(WWW_ROOT . $image_name);
         $this->Images->delete($image);
       }
-
-      $this->Flash->success(__('The article with id: {0} has been deleted.', h($id)));
+      $log = 'The article with id: ' . $id . ' has been deleted.';
+      $this->setLog($log);
+      $this->Flash->success(__($log));
 
       return $this->redirect(['action' => 'tableList']);
     }
@@ -198,12 +210,16 @@ class ArticlesController extends AppController {
     $file_ext =  substr(strrchr($file_name, '.'), 1);
 
     if (!in_array($file_ext, $allow_ext)) {
-      $this->Flash->error(__('You can upload only ' . implode(", ", $allow_ext) . ' file.'));
+      $log = 'You can upload only ' . implode(", ", $allow_ext) . ' file.';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
       return FALSE;
     }
 
     if ($files['size'] > 3000000) {
-      $this->Flash->error(__('You can upload image less than 3 MB'));
+      $log = 'You can upload image less than 3 MB';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
       return FALSE;
     }
 
@@ -219,7 +235,9 @@ class ArticlesController extends AppController {
         return $img->id;
       }
     }
-    $this->Flash->error(__('Unable to save file. Something wrong with saving =('));
+    $log = 'Unable to save file. Something wrong with saving =(';
+    $this->setLog($log);
+    $this->Flash->error(__($log));
 
     return FALSE;
   }

@@ -104,7 +104,9 @@ class UsersController extends AppController {
 
         return $this->redirect($this->Auth->redirectUrl());
       }
-      $this->Flash->error(__('Invalid alias or password, try again'));
+      $log = 'Invalid alias or password, try again';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
     }
   }
 
@@ -124,11 +126,15 @@ class UsersController extends AppController {
     if ($this->request->is('post')) {
       $user = $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
-        $this->Flash->success(__('User have been created.'));
+        $log = 'User have been created.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
 
         $this->redirect(['action' => $redirect]);
       } else {
-        $this->Flash->error(__('Unable to save user.'));
+        $log = 'Unable to save user.';
+        $this->setLog($log);
+        $this->Flash->error(__($log));
       }
     }
     $this->set('user', $user);
@@ -150,7 +156,9 @@ class UsersController extends AppController {
         $this->Flash->success(__('Your user has been updated.'));
         return $this->redirect( $this->referer() );
       }
-      $this->Flash->error(__('Unable to update your user'));
+      $log = 'Unable to update your user';
+      $this->setLog($log);
+      $this->Flash->error(__($log));
     }
     $this->set('user', $user);
   }
@@ -170,7 +178,9 @@ class UsersController extends AppController {
 
     $user = $this->Users->get($id);
     if ($this->Users->delete($user)) {
-      $this->Flash->success(__('The user with id: {0} has been deleted.', h($id)));
+      $log = 'The user with id: ' . $id . ' has been deleted.';
+      $this->setLog($log);
+      $this->Flash->success(__($log));
 
       return $this->redirect(['action' => 'index']);
     }

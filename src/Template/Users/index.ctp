@@ -38,7 +38,7 @@
             <?= $user->email ?>
         </td>
         <td>
-            <?= $user->role ?>
+            <?= $user->role->role_name ?>
         </td>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $user->id]) ?>
@@ -52,8 +52,4 @@
     </tr>
     <?php endforeach; ?>
 </table>
-<ul class="pagination">
-    <?= $this->Paginator->prev('« Previous') ?>
-    <?= $this->Paginator->numbers() ?>
-    <?= $this->Paginator->next('Next »') ?>
-</ul>
+<?= $this->element('/paginator'); ?>

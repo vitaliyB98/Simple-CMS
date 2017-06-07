@@ -35,7 +35,7 @@ class LogsTable extends Table
         $this->setTable('logs');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
+        $this->belongsTo('Users');
         $this->addBehavior('Timestamp');
     }
 

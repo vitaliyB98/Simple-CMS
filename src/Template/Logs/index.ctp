@@ -17,8 +17,7 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('body_log') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('body_log', 'About log') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -27,7 +26,6 @@
         <tbody>
             <?php foreach ($logs as $log): ?>
             <tr>
-                <td><?= $this->Number->format($log->id) ?></td>
                 <td><?= h($log->body_log) ?></td>
                 <td><?= empty($log->user->id) ? 'guest' : h($log->user->name) ?></td>
                 <td><?= h($log->created) ?></td>

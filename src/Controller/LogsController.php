@@ -27,7 +27,7 @@ class LogsController extends AppController
      *   Number row.
      * @return \Cake\Http\Response|null
      */
-    public function index($limit = 10)
+    public function index($limit = 20)
     {
         $logs = $this->paginate($this->Logs->find('all')->contain('Users'), [
           'limit' => $limit,

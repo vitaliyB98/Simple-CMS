@@ -22,10 +22,23 @@ class UsersTable extends Table {
       ->requirePresence('name')
       ->notEmpty('alias')
       ->requirePresence('alias')
+      ->add('alias', [
+        'unique' => [
+          'rule' => 'validateUnique',
+          'provider' => 'table',
+          'message' => 'Your alias is`nt unique.',
+        ]
+      ])
       ->notEmpty('email')
       ->requirePresence('email')
       ->notEmpty('password')
-      ->requirePresence('password');
+      ->requirePresence('password')
+      ->add('password', [
+        'length' => [
+          'rule' => ['minLength', 3],
+          'message' => 'Password need to be at least 3 characters.'
+        ]
+      ]);
 
     return $validator;
   }

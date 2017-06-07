@@ -115,20 +115,27 @@ class UsersController extends AppController {
     $this->getRoleList();
 
     if ($this->request->is('post')) {
+
       $user = $this->Users->patchEntity($user, $this->request->getData());
+
       if ($this->Users->save($user)) {
-        $log = 'User have been created.';
+
+        $log = 'User with `' . $user['alias'] . '` alias have been created.';
         $this->setLog($log);
         $this->Flash->success(__($log));
 
         $this->redirect(['action' => $redirect]);
+
       } else {
+
         $log = 'Unable to save user.';
         $this->setLog($log);
         $this->Flash->error(__($log));
+
       }
     }
     $this->set('user', $user);
+
   }
 
   public function edit($id = NULL) {
@@ -180,7 +187,7 @@ class UsersController extends AppController {
   }
 
   /**
-   * Gets role list.
+   * Gets role list method.
    */
   private function getRoleList() {
     $roles = $this->Roles->find('all');

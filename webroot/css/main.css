@@ -175,6 +175,9 @@ input[type="submit"] {
 .form legend {
     color: white;
 }
+.form .error-message {
+    color: white;
+}
 .btn-form:hover {
     color: white;
     background: inherit;

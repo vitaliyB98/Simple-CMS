@@ -46,7 +46,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->CKEditor->loadJs(); ?>
 </head>
 <body>
-    <nav class="navbar navbar-inverse" data-topbar role="navigation">
+    <nav class="navbar navbar-them" data-topbar role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">

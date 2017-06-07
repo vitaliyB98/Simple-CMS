@@ -14,16 +14,10 @@
 <table>
     <tr>
         <th>
-            <?= $this->Html->link('Title', [
-                'action' => 'profile',
-                '?' => ['sort_by' => 'Articles.title', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('title') ?>
         </th>
         <th>
-            <?= $this->Html->link('Created', [
-                'action' => 'profile',
-                '?' => ['sort_by' => 'Articles.created', 'type_sort' => isset($type_sort) ? $type_sort : 'ASC']
-            ]) ?>
+            <?= $this->Paginator->sort('created') ?>
         </th>
         <th>
             Action
@@ -49,8 +43,4 @@
     </tr>
     <?php endforeach; ?>
 </table>
-<ul class="pagination">
-    <?= $this->Paginator->prev('« Previous') ?>
-    <?= $this->Paginator->numbers() ?>
-    <?= $this->Paginator->next('Next »') ?>
-</ul>
+<?= $this->element('/paginator'); ?>

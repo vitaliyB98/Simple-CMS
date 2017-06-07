@@ -147,9 +147,9 @@ input[type="submit"] {
 }
 .form {
     width: 30%;
-    background: #3b3a36;
+    background: #333;
     margin: 0 auto;
-    padding: 0px 20px;
+    padding: 0 20px;
 }
 .form label {
     color: #e9ece5;

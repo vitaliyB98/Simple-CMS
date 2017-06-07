@@ -20,8 +20,6 @@ class ArticlesController extends AppController {
 
     $this->loadModel('Users');
     $this->loadModel('Images');
-    $this->loadComponent('Flash'); // Include the FlashComponent
-    $this->loadComponent('Paginator');
   }
 
   /**
@@ -87,6 +85,8 @@ class ArticlesController extends AppController {
    * @return bool
    */
   public function index($limit = 6) {
+
+
     $articles = $this->paginate(
       $this->Articles->find('all')->contain(['Users', 'Images']), [
         'limit' => $limit,

@@ -3,8 +3,10 @@
     <?= $this->Form->create() ?>
     <fieldset>
         <h2>Login</h2>
-        <?= $this->Form->input('alias', array('type' => 'text')) ?>
-        <?= $this->Form->input('password', array('type' => 'password')) ?>
+        <div class = "form-group">
+            <?= $this->Form->input('alias', ['type' => 'text', 'class' => 'form-control']) ?>
+            <?= $this->Form->input('password', ['type' => 'password', 'class' => 'form-control']) ?>
+        </div>
         <?= $this->Form->submit('Login', array('class' => 'btn-form')) ?>
         <?= $this->Html->link('Sign up', ['controller' => 'users', 'action' => 'signup'], ['class' => 'text-center']) ?>
     </fieldset>

@@ -3,10 +3,10 @@
         <fieldset>
             <legend>Edit</legend>
             <?php
-                echo $this->Form->input('name', ['type' => 'text']);
-                echo $this->Form->input('alias', ['type' => 'text']);
-                echo $this->Form->input('email', ['type' => 'email']);
-                echo $this->Form->input('password', ['type' => 'password']);
+                echo $this->Form->input('name', ['type' => 'text', 'class' => 'form-control']);
+                echo $this->Form->input('alias', ['type' => 'text', 'class' => 'form-control']);
+                echo $this->Form->input('email', ['type' => 'email', 'class' => 'form-control']);
+                echo $this->Form->input('password', ['type' => 'password', 'class' => 'form-control']);
                 echo $this->Form->input('birth', [
                     'label' => 'Date of birth',
                     'minYear' => date('Y') - 70,

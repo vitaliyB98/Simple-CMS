@@ -13,8 +13,6 @@ class UsersController extends AppController {
     parent::initialize();
     $this->loadModel('Roles');
     $this->loadModel('Articles');
-    $this->loadComponent('Flash'); // Include the FlashComponent
-    $this->loadComponent('Paginator');
   }
 
   /**
@@ -89,30 +87,28 @@ class UsersController extends AppController {
   /**
    * Profile method.
    *
+   * @param int $limit
+   *   Limit records per page.
+   *
    * @return bool
    */
-  public function profile() {
-    empty($_GET['sort_by']) ? $sort_by = 'Articles.created' : $sort_by = $_GET['sort_by'];
-    empty($_GET['type_sort']) ? $type_sort = 'DESC' : $type_sort = $_GET['type_sort'];
-
+  public function profile($limit = 10) {
     $userId = $this->Auth->user('id');
 
     $this->view($userId);
 
-    $this->set('articles', $this->Paginator->paginate($this->Articles->find('all'), [
+    $articles = $this->paginate(
+      $this->Articles->find('all')->contain(['Users', 'Images']), [
         'conditions' => ['user_id' => $userId],
-        'limit' => 10,
+        'limit' => $limit,
         'order' => [
-          $sort_by => $type_sort,
+          'Articles.created' => 'DESC',
         ]
       ]
-    ));
+    );
 
-    if ($type_sort == 'ASC') {
-      $this->set(['type_sort' => 'DESC']);
-    } else {
-      $this->set(['type_sort' => 'ASC']);
-    }
+    $this->set(compact('articles'));
+    $this->set('_serialize', ['articles']);
 
     return NULL;
   }

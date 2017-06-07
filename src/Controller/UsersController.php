@@ -91,7 +91,8 @@ class UsersController extends AppController {
       $user = $this->Auth->identify();
       if ($user) {
         $this->Auth->setUser($user);
-
+        $log = 'User with alias `' . $user['alias'] . '`` login.';
+        $this->setLog($log);
         return $this->redirect($this->Auth->redirectUrl());
       }
       $log = 'Invalid alias or password, try again';

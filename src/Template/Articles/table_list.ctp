@@ -2,7 +2,7 @@
 
 <?= $this->element('/admintabs'); ?>
 
-<?= $this->Html->link('Add post', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
+<?= $this->Html->link('Add post', ['action' => 'add'], ['class' => 'btn-theme']) ?>
 <table>
     <tr>
 

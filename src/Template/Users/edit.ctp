@@ -17,7 +17,7 @@
                     'options' => $role_name,
                     ));
                 }
-                echo $this->Form->submit('Edit', array('class' => 'btn btn-primary'));
+                echo $this->Form->submit('Edit', array('class' => 'btn-form'));
             ?>
         </fieldset>
     <?= $this->Form->end() ?>

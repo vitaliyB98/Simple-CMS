@@ -1,7 +1,7 @@
 <h1>Profile</h1>
 <fieldset>
     <legend>Information about me.</legend>
-    <?= $this->Html->link('Edit', ['controller' => 'Users','action' => 'edit', $user->id], ['class' => 'btn btn-info']) ?>
+    <?= $this->Html->link('Edit', ['controller' => 'Users','action' => 'edit', $user->id], ['class' => 'btn-theme']) ?>
     <h4>Name: <?= $user->name ?></h4>
     <h4>Alias: <?= $user->alias ?></h4>
     <h4>Email: <?= $user->email ?></h4>
@@ -10,7 +10,7 @@
 
 
 <h1>My articles</h1>
-<?= $this->Html->link('Add post', ['controller' => 'Articles' ,'action' => 'add'], ['class' => 'btn btn-info']) ?>
+<?= $this->Html->link('Add post', ['controller' => 'Articles' ,'action' => 'add'], ['class' => 'btn-theme']) ?>
 <table>
     <tr>
         <th>

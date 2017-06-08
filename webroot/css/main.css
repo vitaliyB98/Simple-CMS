@@ -74,7 +74,6 @@ div.message {
     overflow: hidden;
     height: 50px;
     line-height: 2.5em;
-    box-radius: 5px;
 }
 
 div.message:before {
@@ -127,7 +126,6 @@ textarea,
 select {
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
     box-sizing: border-box;
@@ -140,9 +138,7 @@ select {
     color: #555;
     margin: 5px 0;
 }
-input[type="submit"] {
-    margin: 10px 0;
-}
+
 .cboxPhoto {
     width: 50%;
     height: auto;
@@ -204,4 +200,20 @@ input[type="submit"] {
 }
 .nav-tabs {
     margin-bottom: 20px;
+}
+.btn-theme {
+    padding: 5px 25px;
+    margin: 10px auto;
+    font-size: 18px;
+    font-weight: 500;
+    display: inline-block;
+    color: white;
+    background: #52658F;
+    cursor: pointer;
+    border: none;
+}
+.btn-theme:hover {
+    color: white;
+    text-decoration: none;
+    background: #333A56;
 }

@@ -1,6 +1,6 @@
 <h1><?= __('Roles') ?></h1>
 <?= $this->element('/admintabs'); ?>
-<?= $this->Html->link('Add role', ['action' => 'add'], ['class' => 'btn btn-info']) ?>
+<?= $this->Html->link('Add role', ['action' => 'add'], ['class' => 'btn-theme']) ?>
 <table>
     <tr>
         <th>

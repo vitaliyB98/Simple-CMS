@@ -15,7 +15,7 @@
             echo $this->Form->input('role_id', array(
             'options' => $role_name,
             ));
-            echo $this->Form->submit('Add', array('class' => 'btn btn-primary'));
+            echo $this->Form->submit('Add', array('class' => 'btn-form'));
         ?>
     </fieldset>
     <?= $this->Form->end() ?>

@@ -9,7 +9,7 @@
 
 <?= $this->Form->postLink(__('Delete all logs'),
     ['action' => 'deleteAll'],
-    ['confirm' => __('Are you sure you want to delete all logs?'), 'class' => 'btn btn-warning'])
+    ['confirm' => __('Are you sure you want to delete all logs?'), 'class' => 'btn-theme'])
 ?>
 
 

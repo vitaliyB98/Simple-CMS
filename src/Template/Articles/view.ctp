@@ -1,4 +1,4 @@
-<?= $this->Html->link('Back', ['controller' => 'Articles', 'action' => 'index']) ?>
+<?= $this->Html->link('Back', 'javascript:history.back()') ?>
 <?php if ($role == '3'): ?>
 <div class = "mini-toolbar text-right">
     <?= $this->Html->link('Edit', ['controller' => 'Articles', 'action' => 'edit', $article['id']]) ?>

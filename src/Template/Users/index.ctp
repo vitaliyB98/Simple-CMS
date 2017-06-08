@@ -1,5 +1,6 @@
 <h1><?= __('Users') ?></h1>
 <?= $this->element('/admintabs'); ?>
+<?= $this->element('/delete_modal'); ?>
 <?= $this->Html->link('Add user', ['action' => 'add'], ['class' => 'btn-theme']) ?>
 
 <table>
@@ -42,14 +43,11 @@
         </td>
         <td>
             <?= $this->Html->link('Edit', ['action' => 'edit', $user->id]) ?>
-            <?= $this->Form->postLink(
-                'Delete',
-                    ['action' => 'delete', $user->id],
-                    ['confirm' => 'Delete all user`s post?']
-                )
-            ?>
+            <?= $this->Html->link('Delete', ['controller' => 'users'], ['data-remodal-target' => 'modal', 'id' => $user->id]) ?>
         </td>
     </tr>
     <?php endforeach; ?>
 </table>
 <?= $this->element('/paginator'); ?>
+
+<?= $this->Html->script('modal.js') ?>

@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 
 class ArticlesController extends AppController {
 
@@ -28,10 +27,12 @@ class ArticlesController extends AppController {
    * @param $event
    *   Object.
    *
-   * @return mixed
+   * @return bool
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
+
+    return NULL;
   }
 
   /**

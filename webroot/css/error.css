@@ -1,0 +1,16 @@
+body {
+    background: #340030;
+    color: white;
+    font-family: "Helvetica";
+}
+img {
+    height: 20vh;
+    margin: 35vh auto;
+    display: block;
+}
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 2em;
+
+}

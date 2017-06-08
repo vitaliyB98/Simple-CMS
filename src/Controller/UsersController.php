@@ -56,7 +56,10 @@ class UsersController extends AppController {
    */
   public function index($limit = 20) {
     $users = $this->paginate($this->Users->find('all')->contain('Roles'), [
-      'limit' => $limit
+      'limit' => $limit,
+      'order' => [
+        'Users.created' => 'DESC'
+      ]
     ]);
 
     $this->set(compact('users'));

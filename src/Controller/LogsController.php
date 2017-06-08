@@ -46,6 +46,7 @@ class LogsController extends AppController
    */
   public function index($limit = 20)
   {
+    $count = $this->Logs->find('all')->count();
     $logs = $this->paginate($this->Logs->find('all')->contain('Users'), [
       'limit' => $limit,
       'order' => [
@@ -53,7 +54,7 @@ class LogsController extends AppController
       ]
     ]);
 
-    $this->set(compact('logs'));
+    $this->set(compact('logs', 'count'));
     $this->set('_serialize', ['logs']);
   }
 

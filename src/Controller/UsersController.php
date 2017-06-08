@@ -54,7 +54,7 @@ class UsersController extends AppController {
    *
    * @return bool
    */
-  public function index($limit = 10) {
+  public function index($limit = 20) {
     $users = $this->paginate($this->Users->find('all')->contain('Roles'), [
       'limit' => $limit
     ]);
@@ -114,22 +114,50 @@ class UsersController extends AppController {
   }
 
   /**
-   * Login method.
+   * Create Auth method.
+   *
+   * @param $user
+   *   User object.
    *
    * @return mixed
    */
-  public function login() {
-    if ($this->request->is('post')) {
+  public function createAuth($user) {
+    if ($user) {
+      $this->Auth->setUser($user);
+      $log = 'User with alias `' . $user['alias'] . '` login.';
+      $this->setLog($log);
+      $this->redirect($this->Auth->redirectUrl());
+
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Login method.
+   *
+   * @param $user
+   *   User object.
+   *
+   * @return mixed
+   */
+  public function login($user = NULL) {
+
+    if ($this->request->is('post') && $user === NULL) {
       $user = $this->Auth->identify();
-      if ($user) {
-        $this->Auth->setUser($user);
-        $log = 'User with alias `' . $user['alias'] . '` login.';
-        $this->setLog($log);
-        return $this->redirect($this->Auth->redirectUrl());
-      }
+
+      // Redirect if success.
+      $this->createAuth($user);
+
       $log = 'Invalid alias or password, try again';
       $this->setLog($log);
       $this->Flash->error(__($log));
+
+    } else {
+      $user = $this->Auth->identify();
+
+      $this->createAuth($user);
     }
 
     return NULL;
@@ -151,7 +179,7 @@ class UsersController extends AppController {
    * Sign up method.
    */
   public function signUp() {
-    $this->add();
+    $this->add('login');
   }
 
   /**
@@ -176,6 +204,10 @@ class UsersController extends AppController {
         $log = 'User with `' . $user['alias'] . '` alias have been created.';
         $this->setLog($log);
         $this->Flash->success(__($log));
+
+        if ($redirect == 'login') {
+          $this->login($user);
+        }
 
         $this->redirect(['action' => $redirect]);
 

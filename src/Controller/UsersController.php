@@ -151,11 +151,11 @@ class UsersController extends AppController {
       $user = $this->Auth->identify();
 
       // Redirect if success.
-      $this->createAuth($user);
-
-      $log = 'Invalid alias or password, try again';
-      $this->setLog($log);
-      $this->Flash->error(__($log));
+      if (!$this->createAuth($user)) {
+        $log = 'Invalid alias or password, try again';
+        $this->setLog($log);
+        $this->Flash->error(__($log));
+      }
 
     } else {
       $user = $this->Auth->identify();

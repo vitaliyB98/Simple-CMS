@@ -7,7 +7,7 @@
 <h1><?= __('Logs') ?></h1>
 <?= $this->element('/admintabs'); ?>
 
-<?= $this->Form->postLink(__('Delete all logs'),
+<?= $this->Form->postLink(__('Delete all ' . $count . ' logs'),
     ['action' => 'deleteAll'],
     ['confirm' => __('Are you sure you want to delete all logs?'), 'class' => 'btn-theme'])
 ?>

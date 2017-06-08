@@ -86,7 +86,6 @@ class ArticlesController extends AppController {
    */
   public function index($limit = 6) {
 
-
     $articles = $this->paginate(
       $this->Articles->find('all')->contain(['Users', 'Images']), [
         'limit' => $limit,

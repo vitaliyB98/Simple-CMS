@@ -30,6 +30,8 @@ class AdminController extends AppController {
     if (isset($this->role) && ($this->role ==! 3)) {
       return FALSE;
     }
+
+    return NULL;
   }
 
 }

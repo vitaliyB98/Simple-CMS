@@ -22,26 +22,16 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
+    <!-- Bootstrap -->
+    <?= $this->Html->css('error.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <div id="container">
-        <div id="header">
-            <h1><?= __('Error') ?></h1>
-        </div>
-        <div id="content">
-            <?= $this->Flash->render() ?>
-
-            <?= $this->fetch('content') ?>
-        </div>
-        <div id="footer">
-            <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
-        </div>
+    <div id="container error-page">
+        <?= $this->Html->image('/img/fuel-404-logo.png') ?>
     </div>
 </body>
 </html>

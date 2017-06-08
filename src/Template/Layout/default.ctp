@@ -39,6 +39,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('/bower_components/jquery-colorbox/example5/colorbox.css') ?>
     <?= $this->Html->script('/bower_components/jquery-colorbox/jquery.colorbox.js') ?>
 
+    <!-- Remodal -->
+    <?= $this->Html->css('/bower_components/remodal/dist/remodal-default-theme.css') ?>
+    <?= $this->Html->css('/bower_components/remodal/dist/remodal.css') ?>
+    <?= $this->Html->script('/bower_components/remodal/dist/remodal.js') ?>
+
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>

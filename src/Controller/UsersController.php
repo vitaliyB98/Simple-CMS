@@ -17,9 +17,16 @@ class UsersController extends AppController {
 
   /**
    * Before filter method.
+   *
+   * @param $event
+   *   Event object.
+   *
+   * @return bool
    */
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
+
+    return NULL;
   }
 
   /**
@@ -248,11 +255,14 @@ class UsersController extends AppController {
     if ($this->request->is(['post', 'put'])) {
       $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
+
         $log = 'Your user has been updated.';
         $this->setLog($log);
         $this->Flash->success(__($log));
+
         return $this->redirect( $this->referer() );
       }
+
       $log = 'Unable to update your user';
       $this->setLog($log);
       $this->Flash->error(__($log));
@@ -270,25 +280,48 @@ class UsersController extends AppController {
    * @return mixed
    */
   public function delete($id) {
-    $this->request->allowMethod(['post', 'delete']);
+    if (empty($_GET['param'])) {
+      $log = 'Someone want delete users without your permission';
+      $this->setLog($log);
 
-    $articles = $this->Articles->find('all', [
-      'conditions' => [
-        'Articles.user_id' => $id,
-      ],
-    ]);
-    foreach ($articles as $article) {
-      $article = $this->Articles->get($article->id);
-      $this->Articles->delete($article);
+      $this->goHome();
+      return NULL;
     }
 
-    $user = $this->Users->get($id);
-    if ($this->Users->delete($user)) {
-      $log = 'The user with id: ' . $id . ' has been deleted.';
-      $this->setLog($log);
-      $this->Flash->success(__($log));
+    // Check conditions.
+    $check_param = ($_GET['param'] === '13p5798e64y2') || ($_GET['param'] === '24e68p97o53n1');
+    $check_role = $this->role === 3;
 
-      return $this->redirect(['action' => 'index']);
+    if ($check_param && $check_role) {
+
+      if ($_GET['param'] === '13p5798e64y2') {
+        $articles = $this->Articles->find('all', [
+          'conditions' => [
+            'Articles.user_id' => $id,
+          ],
+        ]);
+
+        // Delete all articles for users.
+        foreach ($articles as $article) {
+          $article = $this->Articles->get($article->id);
+          $this->Articles->delete($article);
+        }
+      }
+
+      $user = $this->Users->get($id);
+
+      if ($this->Users->delete($user)) {
+        $log = 'The user with id: ' . $id . ' has been deleted.';
+        $this->setLog($log);
+        $this->Flash->success(__($log));
+
+        return $this->redirect(['action' => 'index']);
+      }
+    } else {
+      $log = 'Someone want delete users without your permission (has param)';
+      $this->setLog($log);
+
+      $this->goHome();
     }
 
     return NULL;

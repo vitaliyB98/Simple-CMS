@@ -13,7 +13,7 @@
                     'maxYear' => date('Y') - 16,
                 ]);
                 if ($role === 3) {
-                    echo $this->Form->input('role', array(
+                    echo $this->Form->input('role_id', array(
                     'options' => $role_name,
                     ));
                 }

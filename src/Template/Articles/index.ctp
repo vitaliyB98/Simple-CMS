@@ -51,3 +51,4 @@
     <?= $this->Paginator->numbers() ?>
     <?= $this->Paginator->next('Next »') ?>
 </ul>
+<?= $secret_key; ?>

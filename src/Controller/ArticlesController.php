@@ -95,7 +95,7 @@ class ArticlesController extends AppController {
         ],
       ]
     );
-
+    $this->set('secret_key', $this->Cookie->read('secret_key'));
     $this->set(compact('articles'));
     $this->set('_serialize', ['articles']);
 

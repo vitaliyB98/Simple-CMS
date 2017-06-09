@@ -133,6 +133,10 @@ class UsersController extends AppController {
    */
   public function createAuth($user) {
     if ($user) {
+
+      // Remember me function.
+      $this->rememberMe($user);
+
       $this->Auth->setUser($user);
       $log = 'User with alias `' . $user['alias'] . '` login.';
       $this->setLog($log);
@@ -145,6 +149,20 @@ class UsersController extends AppController {
   }
 
   /**
+   * Remember me method.
+   */
+  public function rememberMe($user) {
+    if (!empty($_POST['remember_me']) && ($_POST['remember_me'] === "1")) {
+
+      $user_object = $this->Users->get($user['id']);
+      $hash = bin2hex(openssl_random_pseudo_bytes(75));
+      $user_object->secret_key = $hash;
+      $this->Cookie->write('secret_key', $hash, false, 60*60*24*30);
+
+      $this->Users->save($user_object);
+    }
+  }
+  /**
    * Login method.
    *
    * @param $user
@@ -153,6 +171,19 @@ class UsersController extends AppController {
    * @return mixed
    */
   public function login($user = NULL) {
+
+    if (!empty($this->Cookie->read('secret_key'))) {
+      $user = $this->Users->find('all', [
+        'conditions' => [
+          'Users.secret_key' => $this->Cookie->read('secret_key')
+        ]
+      ]);
+      $user->hydrate(false);
+      $user = $user->toArray();
+      $user = array_shift($user);
+
+      $this->createAuth($user);
+    }
 
     if ($this->request->is('post') && $user === NULL) {
       $user = $this->Auth->identify();
@@ -181,6 +212,7 @@ class UsersController extends AppController {
   public function logout() {
     $log = 'User with alias `' . $this->user_alias . '` logout`.';
     $this->setLog($log);
+    $this->Cookie->delete('secret_key');
 
     return $this->redirect($this->Auth->logout());
   }

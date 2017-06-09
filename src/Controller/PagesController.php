@@ -27,7 +27,8 @@ use Cake\View\Exception\MissingTemplateException;
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class PagesController extends AppController {
+class PagesController extends AppController
+{
 
   /**
    * Before filter.
@@ -37,7 +38,8 @@ class PagesController extends AppController {
    *
    * @return mixed
    */
-  public function beforeFilter(Event $event) {
+  public function beforeFilter(Event $event)
+  {
     parent::beforeFilter($event);
     $this->Auth->allow(['display']);
 
@@ -50,6 +52,10 @@ class PagesController extends AppController {
    * @return \Cake\Http\Response|null
    */
   public function display() {
-    return $this->redirect(['controller' => 'articles', 'action' => 'index']);
+    if ($this->role !== 0) {
+      return $this->redirect(['controller' => 'articles', 'action' => 'index']);
+    } else {
+      return $this->redirect(['controller' => 'users', 'action' => 'login']);
+    }
   }
 }

@@ -36,6 +36,11 @@ class AppController extends Controller {
     protected $user_alias;
 
     /**
+     * Cookie components.
+     */
+    public $components = array('Cookie');
+
+    /**
      * Include WYSIWYG.
      */
     public $helpers = ['AkkaCKEditor.CKEditor'];

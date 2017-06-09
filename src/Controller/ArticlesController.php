@@ -92,7 +92,7 @@ class ArticlesController extends AppController {
         'limit' => $limit,
         'order' => [
           'Articles.created' => 'DESC',
-        ]
+        ],
       ]
     );
 

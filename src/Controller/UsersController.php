@@ -182,6 +182,7 @@ class UsersController extends AppController {
       $user->hydrate(false);
       $user = $user->toArray();
       $user = array_shift($user);
+
       if (!empty($user)) {
         $this->createAuth($user);
       }

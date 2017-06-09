@@ -119,7 +119,7 @@ class ArticlesController extends AppController {
 
     $article->hydrate(false);
     $article = $article->toArray();
-    $article = $article[0];
+    $article = array_shift($article);
 
     if (empty($article)) {
       $this->goHome();

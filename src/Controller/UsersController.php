@@ -178,11 +178,14 @@ class UsersController extends AppController {
           'Users.secret_key' => $this->Cookie->read('secret_key')
         ]
       ]);
+
       $user->hydrate(false);
       $user = $user->toArray();
       $user = array_shift($user);
+      if (!empty($user)) {
+        $this->createAuth($user);
+      }
 
-      $this->createAuth($user);
     }
 
     if ($this->request->is('post') && $user === NULL) {
